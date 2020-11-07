@@ -1,0 +1,11 @@
+[package]
+name = "slang-parser"
+version = "0.1.0"
+authors = ["Daniel Solarte <danielsolartech@hotmail.com>"]
+edition = "2018"
+
+[lib]
+path = "lib.rs"
+
+[dependencies]
+codespan-reporting = "0.9.5"

@@ -1,0 +1,13 @@
+[package]
+name = "slang"
+version = "0.1.0"
+authors = ["Daniel Solarte <danielsolartech@hotmail.com>"]
+edition = "2018"
+
+[[bin]]
+name = "slang"
+path = "main.rs"
+
+[dependencies]
+clap = "3.0.0-beta.2"
+slang-parser = { path = "../parser", version = "0.1.0" }
