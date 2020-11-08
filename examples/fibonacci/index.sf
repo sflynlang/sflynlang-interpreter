@@ -6,4 +6,4 @@ func fibonacci(num: number): number {
     return fibonacci(num - 1) + fibonacci(num - 2);
 }
 
-fibonacci(20);
+print(fibonacci(20).toString());

@@ -227,6 +227,14 @@ dependencies = [
  "semver",
  "serde",
  "serde_yaml",
+ "slang-compiler",
+ "slang-parser",
+]
+
+[[package]]
+name = "slang-compiler"
+version = "0.1.0"
+dependencies = [
  "slang-parser",
 ]
 

@@ -1,14 +1,19 @@
 use crate::structures::Slang;
 use crate::utils;
-use clap::{App, ArgMatches};
+use clap::{App, Arg, ArgMatches};
 use std::fs;
 use std::path::Path;
 
 pub fn info() -> App<'static> {
-    App::new("start").about("Execute the current project.")
+    App::new("start").about("Execute the current project.").arg(
+        Arg::new("debug")
+            .short('d')
+            .long("debug")
+            .about("Execute the current project in debug mode."),
+    )
 }
 
-pub fn run(_matches: &ArgMatches) -> i32 {
+pub fn run(matches: &ArgMatches) -> i32 {
     let current_directory = utils::get_current_directory();
     let slang_rute = format!("{}/slang.yml", current_directory);
 
@@ -26,37 +31,36 @@ pub fn run(_matches: &ArgMatches) -> i32 {
 
                 let main_path = Path::new(&main_rute);
 
-                if !main_path.exists() || !main_path.is_file() {
+                if !main_path.exists() || !main_path.is_file() || !main_rute.ends_with(".sf") {
                     println!("The `{}` path does not exist or is not a file.", main_rute);
                     return 1;
                 }
 
                 match fs::read_to_string(&main_rute) {
                     Ok(main_content) => {
-                        if let Some(tokens) =
-                            slang_parser::run_content(project_settings.get_main(), main_content)
-                        {
-                            println!("Tokens: {:?}", tokens);
+                        let file =
+                            slang_parser::File::new(project_settings.get_main(), main_content);
+
+                        if let Some(statements) = slang_parser::run(&file) {
+                            slang_compiler::run(statements, matches.is_present("debug"), &file)
                         } else {
-                            return 1;
+                            1
                         }
                     }
                     Err(_) => {
                         println!("Cannot read the `{}` file.", main_rute);
-                        return 1;
+                        1
                     }
                 }
             }
             Err(_) => {
                 println!("Cannot parse the `slang.yml` file.");
-                return 1;
+                1
             }
         },
         Err(_) => {
             println!("Cannot read the `slang.yml` file.");
-            return 1;
+            1
         }
     }
-
-    0
 }

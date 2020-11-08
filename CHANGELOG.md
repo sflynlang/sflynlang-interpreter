@@ -1,6 +1,9 @@
 # Unreleased
 
 ## 8/11/2020
+- Add `-d`/`--debug` flag to `slang start` command.
+- Add `print` and `debug` built-ins functions.
+- Add compiler.
 - Add parser.
 - Add Abstract Syntax Tree (AST).
 
