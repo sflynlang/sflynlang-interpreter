@@ -372,6 +372,42 @@ impl Lexer {
                 }
             },
 
+            // Check if the current character is a less and get the next character.
+            Some('<') => match self.next_character {
+                // Check if the next character is an equal.
+                Some('=') => {
+                    // Read the next character.
+                    self.read_next_character();
+
+                    // Set the token as a less equal.
+                    token = Token::LessEqual;
+                },
+
+                // Is other character.
+                _ => {
+                    // Set the token as a less.
+                    token = Token::Less;
+                }
+            },
+
+            // Check if the current character is a greater and get the next character.
+            Some('>') => match self.next_character {
+                // Check if the next character is an equal.
+                Some('=') => {
+                    // Read the next character.
+                    self.read_next_character();
+
+                    // Set the token as a greater equal.
+                    token = Token::GreaterEqual;
+                },
+
+                // Is other character.
+                _ => {
+                    // Set the token as a greater.
+                    token = Token::Greater;
+                }
+            },
+
             // Check if the current character is a left parentheses.
             Some('(') => {
                 // Set the token as a left parentheses.
@@ -544,7 +580,7 @@ fn lexer_text() {
         format!(
             "{}\n{}",
             "identifier 'string' \"string\" 10 let const func return if else",
-            ". , : ; = == ! != + += - -= * *= ** **= / /= % %= () {} [] || &&"
+            ". , : ; = == ! != + += - -= * *= ** **= / /= % %= < <= > >= () {} [] || &&"
         ),
     )) {
         macro_rules! is_valid_token {
@@ -621,15 +657,19 @@ fn lexer_text() {
         is_valid_token!(28, 104, 2, 2, 43, Token::SlashEqual);
         is_valid_token!(29, 107, 1, 2, 46, Token::Percent);
         is_valid_token!(30, 109, 2, 2, 48, Token::PercentEqual);
-        is_valid_token!(31, 112, 1, 2, 51, Token::LeftParentheses);
-        is_valid_token!(32, 113, 1, 2, 52, Token::RightParentheses);
-        is_valid_token!(33, 115, 1, 2, 54, Token::LeftBrace);
-        is_valid_token!(34, 116, 1, 2, 55, Token::RightBrace);
-        is_valid_token!(35, 118, 1, 2, 57, Token::LeftBracket);
-        is_valid_token!(36, 119, 1, 2, 58, Token::RightBracket);
-        is_valid_token!(37, 121, 2, 2, 60, Token::DoubleVBar);
-        is_valid_token!(38, 124, 2, 2, 63, Token::DoubleAmper);
-        is_valid_token!(39, 126, 1, 2, 65, Token::EndOfFile);
+        is_valid_token!(31, 112, 1, 2, 51, Token::Less);
+        is_valid_token!(32, 114, 2, 2, 53, Token::LessEqual);
+        is_valid_token!(33, 117, 1, 2, 56, Token::Greater);
+        is_valid_token!(34, 119, 2, 2, 58, Token::GreaterEqual);
+        is_valid_token!(35, 122, 1, 2, 61, Token::LeftParentheses);
+        is_valid_token!(36, 123, 1, 2, 62, Token::RightParentheses);
+        is_valid_token!(37, 125, 1, 2, 64, Token::LeftBrace);
+        is_valid_token!(38, 126, 1, 2, 65, Token::RightBrace);
+        is_valid_token!(39, 128, 1, 2, 67, Token::LeftBracket);
+        is_valid_token!(40, 129, 1, 2, 68, Token::RightBracket);
+        is_valid_token!(41, 131, 2, 2, 70, Token::DoubleVBar);
+        is_valid_token!(42, 134, 2, 2, 73, Token::DoubleAmper);
+        is_valid_token!(43, 136, 1, 2, 75, Token::EndOfFile);
     }
     // Does not have tokens.
     else {

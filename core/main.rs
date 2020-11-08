@@ -1,24 +1,21 @@
-use clap::{App, Arg};
+mod commands;
+pub mod structures;
+pub mod utils;
+
+use clap::App;
 
 fn main() {
     let matches = App::new("slang")
         .about("Programming language.")
         .version("0.1.0")
         .author("Daniel Solarte <danielsolartech@hotmail.com>")
-        .subcommand(
-            App::new("init")
-                .about("Initialize a new slang project.")
-                .arg(
-                    Arg::new("project_name")
-                        .about("The name of the slang project.")
-                        .index(1)
-                        .required(true),
-                ),
-        )
-        .subcommand(App::new("start").about("Execute the current project."))
+        .subcommand(commands::init::info())
+        .subcommand(commands::start::info())
         .get_matches();
 
-    println!("Matches: {:?}\n", matches);
-
-    slang_parser::run_test();
+    if let Some(ref matches) = matches.subcommand_matches("init") {
+        std::process::exit(commands::init::run(matches));
+    } else if let Some(ref matches) = matches.subcommand_matches("start") {
+        std::process::exit(commands::start::run(matches));
+    }
 }

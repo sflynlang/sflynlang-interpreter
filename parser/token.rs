@@ -55,6 +55,12 @@ pub enum Token {
     Percent,
     PercentEqual,
 
+    Less,
+    LessEqual,
+
+    Greater,
+    GreaterEqual,
+
     LeftParentheses,
     RightParentheses,
 
@@ -152,6 +158,12 @@ impl Token {
 
             Self::Percent => String::from("%"),
             Self::PercentEqual => String::from("%="),
+
+            Self::Less => String::from("<"),
+            Self::LessEqual => String::from("<="),
+
+            Self::Greater => String::from(">"),
+            Self::GreaterEqual => String::from(">="),
 
             Self::LeftParentheses => String::from("("),
             Self::RightParentheses => String::from(")"),
