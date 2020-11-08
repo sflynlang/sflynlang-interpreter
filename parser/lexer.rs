@@ -249,13 +249,13 @@ impl Lexer {
 
                     // Set the token as a not equal.
                     token = Token::NotEqual;
-                },
+                }
 
                 // Is other character.
                 _ => {
                     // Set the token as a not.
                     token = Token::Not;
-                },
+                }
             },
 
             // Check if the current character is a plus and get the next character.
@@ -549,18 +549,49 @@ fn lexer_text() {
     )) {
         macro_rules! is_valid_token {
             ($i: expr, $start_position: expr, $length: expr, $line: expr, $column: expr, $token: expr) => {
-                let position = Position::new($start_position, $start_position + $length, $line, $column);
+                let position =
+                    Position::new($start_position, $start_position + $length, $line, $column);
                 let tok = Tok::new(&position, &$token);
 
                 if tokens[$i] != tok {
-                    panic!("The tokens are not equal:\nLexer Tok: {:?}\nCompare Tok: {:?}\n", tokens[$i], tok);
+                    panic!(
+                        "The tokens are not equal:\nLexer Tok: {:?}\nCompare Tok: {:?}\n",
+                        tokens[$i], tok
+                    );
                 }
             };
         }
 
-        is_valid_token!(0, 0, 10, 1, 1, Token::Identifier { value: String::from("identifier") });
-        is_valid_token!(1, 11, 8, 1, 12, Token::Str { value: String::from("string") });
-        is_valid_token!(2, 20, 8, 1, 21, Token::Str { value: String::from("string") });
+        is_valid_token!(
+            0,
+            0,
+            10,
+            1,
+            1,
+            Token::Identifier {
+                value: String::from("identifier")
+            }
+        );
+        is_valid_token!(
+            1,
+            11,
+            8,
+            1,
+            12,
+            Token::Str {
+                value: String::from("string")
+            }
+        );
+        is_valid_token!(
+            2,
+            20,
+            8,
+            1,
+            21,
+            Token::Str {
+                value: String::from("string")
+            }
+        );
         is_valid_token!(3, 29, 2, 1, 30, Token::Num { value: 10.0 });
         is_valid_token!(4, 32, 3, 1, 33, Token::Let);
         is_valid_token!(5, 36, 5, 1, 37, Token::Const);
