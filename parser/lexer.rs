@@ -90,6 +90,34 @@ impl Lexer {
         self.current_character.is_some() && self.current_character.unwrap().is_numeric()
     }
 
+    fn read_number(&mut self) -> Result<Token, Error> {
+        let mut position = Position::new(
+            self.current_position,
+            self.current_position,
+            self.current_line,
+            self.current_column,
+        );
+
+        // Initialize an empty value.
+        let mut value = String::new();
+
+        while self.is_number_begin() {
+            // Append the current character to the value and read the next character.
+            value.push(self.read_next_character().unwrap());
+        }
+
+        if let Ok(value) = value.parse::<f64>() {
+            // Return the number.
+            return Ok(Token::Num { value });
+        }
+
+        // Set the end position of the initial position as the current position.
+        position.set_end_position(self.current_position);
+
+        // Return an error.
+        Err(Error::new_lexical(&position, "Invalid number expression."))
+    }
+
     /// Check if the current character is a letter or an underscore.
     fn is_identifier_begin(&self) -> bool {
         // Check if the current character exists and is a letter.
@@ -129,13 +157,11 @@ impl Lexer {
         // Initialize an empty value.
         let mut value = String::new();
 
+        // Read the next character.
+        self.read_next_character();
+
         // Check if the current character is not the initial quote.
         while self.current_character != Some(quote) {
-            // Check if the current character is the initial quote.
-            if self.current_character == Some(quote) {
-                continue;
-            }
-
             // Check if the current character is an end of line or does not exist.
             if self.current_character == Some('\n') || self.current_character == None {
                 // Return an error.
@@ -164,6 +190,8 @@ impl Lexer {
             self.current_line,
             self.current_column,
         );
+
+        let mut read_before = true;
 
         // Initialize the token.
         let token: Token;
@@ -210,6 +238,24 @@ impl Lexer {
                     // Set the token as an equal.
                     token = Token::Equal;
                 }
+            },
+
+            // Check if the current charaacter is a not and get the next character.
+            Some('!') => match self.next_character {
+                // Check if the next character is an equal.
+                Some('=') => {
+                    // Read the next character.
+                    self.read_next_character();
+
+                    // Set the token as a not equal.
+                    token = Token::NotEqual;
+                },
+
+                // Is other character.
+                _ => {
+                    // Set the token as a not.
+                    token = Token::Not;
+                },
             },
 
             // Check if the current character is a plus and get the next character.
@@ -424,10 +470,19 @@ impl Lexer {
 
             // Is not a sign.
             _ => {
+                // Check if the current character is the begin of a number.
+                if self.is_number_begin() {
+                    // Set the token as the number token.
+                    token = self.read_number()?;
+
+                    read_before = false;
+                }
                 // Check if the current character is the begin of an identifier.
-                if self.is_identifier_begin() {
+                else if self.is_identifier_begin() {
                     // Set the token as the identifier or keywork token.
                     token = self.read_identifier_or_keyword();
+
+                    read_before = false;
                 }
                 // Check if the current character is the begin of a string.
                 else if self.is_string_begin() {
@@ -442,11 +497,13 @@ impl Lexer {
             }
         }
 
+        if read_before {
+            // Read the next character.
+            self.read_next_character();
+        }
+
         // Set the end position of the initial position as the current position.
         position.set_end_position(self.current_position);
-
-        // Read the next character.
-        self.read_next_character();
 
         // Return the tok object.
         Ok(Tok::new(&position, &token))
@@ -473,5 +530,78 @@ impl Lexer {
 
         // Return the tokens list.
         Ok(tokens)
+    }
+}
+
+#[test]
+fn lexer_text() {
+    use crate::{run_file, Position, Tok, Token};
+    use codespan_reporting::files::SimpleFile;
+
+    // Get the tokens of an example file.
+    if let Some(tokens) = run_file(SimpleFile::new(
+        "<<Test>>".to_string(),
+        format!(
+            "{}\n{}",
+            "identifier 'string' \"string\" 10 let const func return if else",
+            ". , : ; = == ! != + += - -= * *= ** **= / /= % %= () {} [] || &&"
+        ),
+    )) {
+        macro_rules! is_valid_token {
+            ($i: expr, $start_position: expr, $length: expr, $line: expr, $column: expr, $token: expr) => {
+                let position = Position::new($start_position, $start_position + $length, $line, $column);
+                let tok = Tok::new(&position, &$token);
+
+                if tokens[$i] != tok {
+                    panic!("The tokens are not equal:\nLexer Tok: {:?}\nCompare Tok: {:?}\n", tokens[$i], tok);
+                }
+            };
+        }
+
+        is_valid_token!(0, 0, 10, 1, 1, Token::Identifier { value: String::from("identifier") });
+        is_valid_token!(1, 11, 8, 1, 12, Token::Str { value: String::from("string") });
+        is_valid_token!(2, 20, 8, 1, 21, Token::Str { value: String::from("string") });
+        is_valid_token!(3, 29, 2, 1, 30, Token::Num { value: 10.0 });
+        is_valid_token!(4, 32, 3, 1, 33, Token::Let);
+        is_valid_token!(5, 36, 5, 1, 37, Token::Const);
+        is_valid_token!(6, 42, 4, 1, 43, Token::Func);
+        is_valid_token!(7, 47, 6, 1, 48, Token::Return);
+        is_valid_token!(8, 54, 2, 1, 55, Token::If);
+        is_valid_token!(9, 57, 4, 1, 58, Token::Else);
+
+        is_valid_token!(10, 61, 1, 1, 62, Token::EndOfLine);
+        is_valid_token!(11, 62, 1, 2, 1, Token::Dot);
+        is_valid_token!(12, 64, 1, 2, 3, Token::Comma);
+        is_valid_token!(13, 66, 1, 2, 5, Token::Colon);
+        is_valid_token!(14, 68, 1, 2, 7, Token::Semicolon);
+        is_valid_token!(15, 70, 1, 2, 9, Token::Equal);
+        is_valid_token!(16, 72, 2, 2, 11, Token::DoubleEqual);
+        is_valid_token!(17, 75, 1, 2, 14, Token::Not);
+        is_valid_token!(18, 77, 2, 2, 16, Token::NotEqual);
+        is_valid_token!(19, 80, 1, 2, 19, Token::Plus);
+        is_valid_token!(20, 82, 2, 2, 21, Token::PlusEqual);
+        is_valid_token!(21, 85, 1, 2, 24, Token::Minus);
+        is_valid_token!(22, 87, 2, 2, 26, Token::MinusEqual);
+        is_valid_token!(23, 90, 1, 2, 29, Token::Star);
+        is_valid_token!(24, 92, 2, 2, 31, Token::StarEqual);
+        is_valid_token!(25, 95, 2, 2, 34, Token::DoubleStar);
+        is_valid_token!(26, 98, 3, 2, 37, Token::DoubleStarEqual);
+        is_valid_token!(27, 102, 1, 2, 41, Token::Slash);
+        is_valid_token!(28, 104, 2, 2, 43, Token::SlashEqual);
+        is_valid_token!(29, 107, 1, 2, 46, Token::Percent);
+        is_valid_token!(30, 109, 2, 2, 48, Token::PercentEqual);
+        is_valid_token!(31, 112, 1, 2, 51, Token::LeftParentheses);
+        is_valid_token!(32, 113, 1, 2, 52, Token::RightParentheses);
+        is_valid_token!(33, 115, 1, 2, 54, Token::LeftBrace);
+        is_valid_token!(34, 116, 1, 2, 55, Token::RightBrace);
+        is_valid_token!(35, 118, 1, 2, 57, Token::LeftBracket);
+        is_valid_token!(36, 119, 1, 2, 58, Token::RightBracket);
+        is_valid_token!(37, 121, 2, 2, 60, Token::DoubleVBar);
+        is_valid_token!(38, 124, 2, 2, 63, Token::DoubleAmper);
+        is_valid_token!(39, 126, 1, 2, 65, Token::EndOfFile);
+    }
+    // Does not have tokens.
+    else {
+        panic!("The file does not have tokens.");
     }
 }

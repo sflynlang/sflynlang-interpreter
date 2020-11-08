@@ -35,6 +35,9 @@ pub enum Token {
     Equal,
     DoubleEqual,
 
+    Not,
+    NotEqual,
+
     Plus,
     PlusEqual,
 
@@ -130,6 +133,9 @@ impl Token {
             Self::Equal => String::from("="),
             Self::DoubleEqual => String::from("=="),
 
+            Self::Not => String::from("!"),
+            Self::NotEqual => String::from("!="),
+
             Self::Plus => String::from("+"),
             Self::PlusEqual => String::from("+="),
 
@@ -166,7 +172,7 @@ impl Token {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Tok {
     /// Position object.
     position: Position,
