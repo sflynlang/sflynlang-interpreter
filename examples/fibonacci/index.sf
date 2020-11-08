@@ -3,7 +3,7 @@ func fibonacci(num: number): number {
         return 1;
     }
 
-    return fibonacci(number - 1) + fibonacci(num - 2);
+    return fibonacci(num - 1) + fibonacci(num - 2);
 }
 
 fibonacci(20);

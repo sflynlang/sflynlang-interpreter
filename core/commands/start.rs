@@ -33,27 +33,29 @@ pub fn run(_matches: &ArgMatches) -> i32 {
 
                 match fs::read_to_string(&main_rute) {
                     Ok(main_content) => {
-                        if let Some(tokens) = slang_parser::run_content(project_settings.get_main(), main_content) {
+                        if let Some(tokens) =
+                            slang_parser::run_content(project_settings.get_main(), main_content)
+                        {
                             println!("Tokens: {:?}", tokens);
                         } else {
                             return 1;
                         }
-                    },
+                    }
                     Err(_) => {
                         println!("Cannot read the `{}` file.", main_rute);
                         return 1;
-                    },
+                    }
                 }
-            },
+            }
             Err(_) => {
                 println!("Cannot parse the `slang.yml` file.");
                 return 1;
-            },
+            }
         },
         Err(_) => {
             println!("Cannot read the `slang.yml` file.");
             return 1;
-        },
+        }
     }
 
     0

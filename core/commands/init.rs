@@ -5,14 +5,12 @@ use std::fs;
 use std::path::Path;
 
 pub fn info() -> App<'static> {
-    App::new("init")
-        .about("Create a new slang project.")
-        .arg(
-            Arg::new("project_name")
-                .about("The name of the slang project.")
-                .index(1)
-                .required(true),
-        )
+    App::new("init").about("Create a new slang project.").arg(
+        Arg::new("project_name")
+            .about("The name of the slang project.")
+            .index(1)
+            .required(true),
+    )
 }
 
 pub fn run(matches: &ArgMatches) -> i32 {
@@ -69,11 +67,11 @@ pub fn run(matches: &ArgMatches) -> i32 {
                     println!("Cannot write inside the `slang.yml` file.");
                     return 1;
                 }
-            },
+            }
             Err(_) => {
                 println!("Cannot parse the `slang.yml` settings.");
                 return 1;
-            },
+            }
         }
 
         // Get the main file path.

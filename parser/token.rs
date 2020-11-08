@@ -1,11 +1,12 @@
 use crate::Position;
+use std::fmt;
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Token {
     // General
-    Identifier { value: String },
-    Str { value: String },
-    Num { value: f64 },
+    Identifier(String),
+    Str(String),
+    Num(f64),
 
     True,
     False,
@@ -99,7 +100,28 @@ impl Token {
             "void" => Token::Void,
 
             // Identifier
-            _ => Token::Identifier { value },
+            _ => Token::Identifier(value),
+        }
+    }
+
+    pub fn get_identifier(&self) -> Option<String> {
+        match self {
+            Self::Identifier(value) => Some(value.clone()),
+            _ => None,
+        }
+    }
+
+    pub fn get_string(&self) -> Option<String> {
+        match self {
+            Self::Str(value) => Some(value.clone()),
+            _ => None,
+        }
+    }
+
+    pub fn get_number(&self) -> Option<f64> {
+        match self {
+            Self::Num(value) => Some(value.clone()),
+            _ => None,
         }
     }
 
@@ -107,9 +129,9 @@ impl Token {
     pub fn to_string(&self) -> String {
         match self {
             // General
-            Self::Identifier { value } => value.to_string(),
-            Self::Str { value: _ } => String::from("String"),
-            Self::Num { value: _ } => String::from("Number"),
+            Self::Identifier(_) => String::from("Identifier"),
+            Self::Str(_) => String::from("String"),
+            Self::Num(_) => String::from("Number"),
 
             Self::True => String::from("true"),
             Self::False => String::from("false"),
@@ -181,6 +203,12 @@ impl Token {
             Self::EndOfLine => String::from("\n"),
             Self::EndOfFile => String::from("<<EOF>>"),
         }
+    }
+}
+
+impl fmt::Display for Token {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_string())
     }
 }
 

@@ -1,5 +1,5 @@
-mod slang_dependency;
 mod slang;
+mod slang_dependency;
 
-pub use slang_dependency::SlangDependency;
 pub use slang::Slang;
+pub use slang_dependency::SlangDependency;

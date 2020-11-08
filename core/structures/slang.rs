@@ -84,7 +84,7 @@ impl Slang {
                 }
             }
         }
-        
+
         false
     }
 }

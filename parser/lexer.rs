@@ -108,14 +108,14 @@ impl Lexer {
 
         if let Ok(value) = value.parse::<f64>() {
             // Return the number.
-            return Ok(Token::Num { value });
+            return Ok(Token::Num(value));
         }
 
         // Set the end position of the initial position as the current position.
         position.set_end_position(self.current_position);
 
         // Return an error.
-        Err(Error::new_lexical(&position, "Invalid number expression."))
+        Err(Error::new_lexical(position, "Invalid number expression."))
     }
 
     /// Check if the current character is a letter or an underscore.
@@ -165,10 +165,7 @@ impl Lexer {
             // Check if the current character is an end of line or does not exist.
             if self.current_character == Some('\n') || self.current_character == None {
                 // Return an error.
-                return Err(Error::new_lexical(
-                    &position,
-                    "You need to close the quote.",
-                ));
+                return Err(Error::new_lexical(position, "You need to close the quote."));
             }
 
             // Append the current character and read the next character.
@@ -176,7 +173,7 @@ impl Lexer {
         }
 
         // Return the str token.
-        Ok(Token::Str { value })
+        Ok(Token::Str(value))
     }
 
     fn get_next_token(&mut self) -> Result<Tok, Error> {
@@ -381,7 +378,7 @@ impl Lexer {
 
                     // Set the token as a less equal.
                     token = Token::LessEqual;
-                },
+                }
 
                 // Is other character.
                 _ => {
@@ -399,7 +396,7 @@ impl Lexer {
 
                     // Set the token as a greater equal.
                     token = Token::GreaterEqual;
-                },
+                }
 
                 // Is other character.
                 _ => {
@@ -459,7 +456,7 @@ impl Lexer {
                 _ => {
                     // Return an error.
                     return Err(Error::new_lexical(
-                        &position,
+                        position,
                         "Maybe do you wish to use `||` instead of `|`?",
                     ));
                 }
@@ -480,7 +477,7 @@ impl Lexer {
                 _ => {
                     // Return an error.
                     return Err(Error::new_lexical(
-                        &position,
+                        position,
                         "Maybe do you wish to use `&&` instead of `&`?",
                     ));
                 }
@@ -528,7 +525,7 @@ impl Lexer {
                 // Is not a valid character.
                 else {
                     // Return an error.
-                    return Err(Error::new_lexical(&position, "Unknown character."));
+                    return Err(Error::new_lexical(position, "Unknown character."));
                 }
             }
         }
@@ -571,18 +568,23 @@ impl Lexer {
 
 #[test]
 fn lexer_text() {
-    use crate::{run_file, Position, Tok, Token};
+    use crate::{Lexer, Position, Tok, Token};
     use codespan_reporting::files::SimpleFile;
 
-    // Get the tokens of an example file.
-    if let Some(tokens) = run_file(SimpleFile::new(
+    let file = SimpleFile::new(
         "<<Test>>".to_string(),
         format!(
             "{}\n{}",
             "identifier 'string' \"string\" 10 let const func return if else",
             ". , : ; = == ! != + += - -= * *= ** **= / /= % %= < <= > >= () {} [] || &&"
         ),
-    )) {
+    );
+
+    let mut lexer = Lexer::new(file.source().to_string());
+    let lexer_run = lexer.run();
+
+    // Get the tokens of an example file.
+    if let Ok(tokens) = lexer_run {
         macro_rules! is_valid_token {
             ($i: expr, $start_position: expr, $length: expr, $line: expr, $column: expr, $token: expr) => {
                 let position =
@@ -604,31 +606,11 @@ fn lexer_text() {
             10,
             1,
             1,
-            Token::Identifier {
-                value: String::from("identifier")
-            }
+            Token::Identifier(String::from("identifier"))
         );
-        is_valid_token!(
-            1,
-            11,
-            8,
-            1,
-            12,
-            Token::Str {
-                value: String::from("string")
-            }
-        );
-        is_valid_token!(
-            2,
-            20,
-            8,
-            1,
-            21,
-            Token::Str {
-                value: String::from("string")
-            }
-        );
-        is_valid_token!(3, 29, 2, 1, 30, Token::Num { value: 10.0 });
+        is_valid_token!(1, 11, 8, 1, 12, Token::Str(String::from("string")));
+        is_valid_token!(2, 20, 8, 1, 21, Token::Str(String::from("string")));
+        is_valid_token!(3, 29, 2, 1, 30, Token::Num(10.0));
         is_valid_token!(4, 32, 3, 1, 33, Token::Let);
         is_valid_token!(5, 36, 5, 1, 37, Token::Const);
         is_valid_token!(6, 42, 4, 1, 43, Token::Func);
@@ -672,7 +654,8 @@ fn lexer_text() {
         is_valid_token!(43, 136, 1, 2, 75, Token::EndOfFile);
     }
     // Does not have tokens.
-    else {
+    else if let Err(error) = lexer_run {
+        error.show(&file);
         panic!("The file does not have tokens.");
     }
 }
