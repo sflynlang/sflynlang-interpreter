@@ -1,4 +1,4 @@
-use crate::structures::Slang;
+use crate::structures::Sflynlang;
 use crate::utils;
 use clap::{App, Arg, ArgMatches};
 use std::fs;
@@ -15,17 +15,17 @@ pub fn info() -> App<'static> {
 
 pub fn run(matches: &ArgMatches) -> i32 {
     let current_directory = utils::get_current_directory();
-    let slang_rute = format!("{}/slang.yml", current_directory);
+    let slang_rute = format!("{}/sflynlang.yml", current_directory);
 
     let slang_path = Path::new(&slang_rute);
 
     if !slang_path.exists() || !slang_path.is_file() {
-        println!("This path is not a slang project.");
+        println!("This path is not a Sflynlang project.");
         return 1;
     }
 
     match fs::read_to_string(slang_rute) {
-        Ok(slang_content) => match serde_yaml::from_str::<Slang>(&slang_content) {
+        Ok(slang_content) => match serde_yaml::from_str::<Sflynlang>(&slang_content) {
             Ok(project_settings) => {
                 let main_rute = format!("{}/{}", current_directory, project_settings.get_main());
 
@@ -39,10 +39,10 @@ pub fn run(matches: &ArgMatches) -> i32 {
                 match fs::read_to_string(&main_rute) {
                     Ok(main_content) => {
                         let file =
-                            slang_parser::File::new(project_settings.get_main(), main_content);
+                            sflynlang_parser::File::new(project_settings.get_main(), main_content);
 
-                        if let Some(statements) = slang_parser::run(&file) {
-                            slang_compiler::run(statements, matches.is_present("debug"), &file)
+                        if let Some(statements) = sflynlang_parser::run(&file) {
+                            sflynlang_compiler::run(statements, matches.is_present("debug"), &file)
                         } else {
                             1
                         }
@@ -54,12 +54,12 @@ pub fn run(matches: &ArgMatches) -> i32 {
                 }
             }
             Err(_) => {
-                println!("Cannot parse the `slang.yml` file.");
+                println!("Cannot parse the `sflynlang.yml` file.");
                 1
             }
         },
         Err(_) => {
-            println!("Cannot read the `slang.yml` file.");
+            println!("Cannot read the `sflynlang.yml` file.");
             1
         }
     }

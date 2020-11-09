@@ -1,21 +1,23 @@
-use crate::structures::Slang;
+use crate::structures::Sflynlang;
 use crate::utils;
 use clap::{App, Arg, ArgMatches};
 use std::fs;
 use std::path::Path;
 
 pub fn info() -> App<'static> {
-    App::new("init").about("Create a new slang project.").arg(
-        Arg::new("project_name")
-            .about("The name of the slang project.")
-            .index(1)
-            .required(true),
-    )
+    App::new("init")
+        .about("Create a new Sflynlang project.")
+        .arg(
+            Arg::new("project_name")
+                .about("The name of the Sflynlang project.")
+                .index(1)
+                .required(true),
+        )
 }
 
 pub fn run(matches: &ArgMatches) -> i32 {
     // Initialize the default project settings.
-    let mut project_settings = Slang::new();
+    let mut project_settings = Sflynlang::new();
 
     // Get the project name from matches.
     if let Some(project_name) = matches.value_of("project_name") {
@@ -53,23 +55,23 @@ pub fn run(matches: &ArgMatches) -> i32 {
         }
 
         // Get the slang.yml path.
-        let slang_file_path = format!("{}slang.yml", project_path);
+        let slang_file_path = format!("{}sflynlang.yml", project_path);
 
         // Get the slang.yml content from the project settings.
         match serde_yaml::to_string(&project_settings) {
             Ok(slang_file_content) => {
                 if let Err(_) = fs::File::create(&slang_file_path) {
-                    println!("Cannot create the `slang.yml` file.");
+                    println!("Cannot create the `sflynlang.yml` file.");
                     return 1;
                 }
 
                 if let Err(_) = fs::write(slang_file_path, slang_file_content) {
-                    println!("Cannot write inside the `slang.yml` file.");
+                    println!("Cannot write inside the `sflynlang.yml` file.");
                     return 1;
                 }
             }
             Err(_) => {
-                println!("Cannot parse the `slang.yml` settings.");
+                println!("Cannot parse the `sflynlang.yml` settings.");
                 return 1;
             }
         }
@@ -87,10 +89,10 @@ pub fn run(matches: &ArgMatches) -> i32 {
             return 1;
         }
 
-        println!("You've created a new Slang project successfully!");
+        println!("You've created a new Sflynlang project successfully!");
         println!("");
         println!("To join to your project use `cd {}`.", project_name);
-        println!("Then, you can run the code using `slang star`.");
+        println!("Then, you can run the code using `sflyn start`.");
         println!("");
         println!("Happy coding!");
 

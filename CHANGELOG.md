@@ -1,5 +1,8 @@
 # Unreleased
 
+## 9/11/2020
+- Renamed to `sflynlang`.
+
 ## 8/11/2020
 - Add `-d`/`--debug` flag to `slang start` command.
 - Add `print` and `debug` built-ins functions.

@@ -1,17 +1,17 @@
-use crate::structures::SlangDependency;
+use crate::structures::Dependency;
 use semver::Version;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct Slang {
+pub struct Sflynlang {
     name: String,
     main: String,
     version: Version,
     authors: Option<Vec<String>>,
-    dependencies: Option<Vec<SlangDependency>>,
+    dependencies: Option<Vec<Dependency>>,
 }
 
-impl Slang {
+impl Sflynlang {
     pub fn new() -> Self {
         Self {
             name: String::new(),
@@ -72,7 +72,7 @@ impl Slang {
         }
     }
 
-    pub fn get_dependencies(&self) -> Option<Vec<SlangDependency>> {
+    pub fn get_dependencies(&self) -> Option<Vec<Dependency>> {
         self.dependencies.clone()
     }
 

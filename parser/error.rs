@@ -37,10 +37,7 @@ impl Error {
     }
 
     pub fn new_expect_arguments(position: Position, expect: usize, got: usize) -> Self {
-        Self::new(
-            position,
-            ErrorType::ExpectArguments(expect, got),
-        )
+        Self::new(position, ErrorType::ExpectArguments(expect, got))
     }
 
     pub fn new_expect_token(position: Position, expect: &str, got: &str) -> Self {
@@ -96,13 +93,19 @@ impl Error {
             ErrorType::ExpectArguments(expected, got) => Diagnostic::error()
                 .with_message("Expected arguments")
                 .with_labels(vec![Label::primary((), self.get_position().get_range())
-                    .with_message(format!("Expect `{}` arguments, got `{}` instead.", expected, got))]),
+                    .with_message(format!(
+                        "Expect `{}` arguments, got `{}` instead.",
+                        expected, got
+                    ))]),
 
             // Get the expect token error.
             ErrorType::ExpectToken(expected, got) => Diagnostic::error()
                 .with_message("Expected token")
                 .with_labels(vec![Label::primary((), self.get_position().get_range())
-                    .with_message(format!("Expect `{}`, got `{}` instead.", expected, got))]),
+                    .with_message(format!(
+                        "Expect `{}`, got `{}` instead.",
+                        expected, got
+                    ))]),
 
             // Get the expect type token error.
             ErrorType::ExpectType(expected, got) => Diagnostic::error()

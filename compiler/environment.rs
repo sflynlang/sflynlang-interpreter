@@ -2,7 +2,7 @@ mod store;
 
 pub use store::Store;
 
-use slang_parser::{Error, File};
+use sflynlang_parser::{Error, File};
 
 pub struct Environment {
     debug_mode: bool,

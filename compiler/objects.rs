@@ -1,4 +1,4 @@
-use slang_parser::{
+use sflynlang_parser::{
     ast::{DataType, DataTypes},
     Position,
 };

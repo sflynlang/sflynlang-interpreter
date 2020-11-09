@@ -2,12 +2,12 @@ use semver::Version;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub struct SlangDependency {
+pub struct Dependency {
     name: String,
     version: Version,
 }
 
-impl SlangDependency {
+impl Dependency {
     pub fn get_name(&self) -> String {
         self.name.clone()
     }

@@ -1,11 +1,12 @@
 [package]
-name = "slang-compiler"
+name = "sflynlang-compiler"
 version = "0.1.0"
-authors = ["Daniel Solarte <danielsolartech@hotmail.com>"]
+authors = ["Sflynlang <sflynlang@outlook.com>"]
 edition = "2018"
+repository = "https://github.com/sflynlang/sflynlang-compiler"
 
 [lib]
 path = "lib.rs"
 
 [dependencies]
-slang-parser = { path = "../parser", version = "0.1.0" }
+sflynlang-parser = { path = "../parser", version = "0.1.0" }

@@ -1,11 +1,12 @@
 [package]
-name = "slang"
+name = "sflyn"
 version = "0.1.0"
-authors = ["Daniel Solarte <danielsolartech@hotmail.com>"]
+authors = ["Sflynlang <sflynlang@outlook.com>"]
 edition = "2018"
+repository = "https://github.com/sflynlang/sflynlang-compiler"
 
 [[bin]]
-name = "slang"
+name = "sflyn"
 path = "main.rs"
 
 [dependencies]
@@ -13,5 +14,5 @@ clap = "3.0.0-beta.2"
 semver = { version = "0.10", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8"
-slang-compiler = { path = "../compiler", version = "0.1.0" }
-slang-parser = { path = "../parser", version = "0.1.0" }
+sflynlang-compiler = { path = "../compiler", version = "0.1.0" }
+sflynlang-parser = { path = "../parser", version = "0.1.0" }

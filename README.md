@@ -1,6 +1,6 @@
-# slang
+# Sflynlang Compiler
 
-This project contains the source code of the slang programming language. It is written in Rustlang.
+This project contains the source code of the Sflynlang programming language. It is written in Rustlang.
 
 ## Pre-requisites
 - [Rustlang](https://rustup.rs/)

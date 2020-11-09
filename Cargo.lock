@@ -220,26 +220,26 @@ dependencies = [
 ]
 
 [[package]]
-name = "slang"
+name = "sflyn"
 version = "0.1.0"
 dependencies = [
  "clap",
  "semver",
  "serde",
  "serde_yaml",
- "slang-compiler",
- "slang-parser",
+ "sflynlang-compiler",
+ "sflynlang-parser",
 ]
 
 [[package]]
-name = "slang-compiler"
+name = "sflynlang-compiler"
 version = "0.1.0"
 dependencies = [
- "slang-parser",
+ "sflynlang-parser",
 ]
 
 [[package]]
-name = "slang-parser"
+name = "sflynlang-parser"
 version = "0.1.0"
 dependencies = [
  "codespan-reporting",

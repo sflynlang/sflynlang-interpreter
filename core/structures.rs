@@ -1,5 +1,5 @@
-mod slang;
-mod slang_dependency;
+mod dependency;
+mod sflynlang;
 
-pub use slang::Slang;
-pub use slang_dependency::SlangDependency;
+pub use dependency::Dependency;
+pub use sflynlang::Sflynlang;

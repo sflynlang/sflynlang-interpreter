@@ -6,7 +6,7 @@ mod objects;
 pub use environment::{Environment, Store};
 pub use objects::{Object, Objects};
 
-use slang_parser::{ast::Statement, File};
+use sflynlang_parser::{ast::Statement, File};
 
 pub fn run(statements: Vec<Statement>, debug_mode: bool, file: &File) -> i32 {
     let mut environment = Environment::new();

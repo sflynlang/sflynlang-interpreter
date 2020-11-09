@@ -1,5 +1,5 @@
 use crate::{Object, Objects};
-use slang_parser::{Error, Position};
+use sflynlang_parser::{Error, Position};
 
 pub fn print(objects: Vec<Object>, position: Position) -> Result<Object, Error> {
     if objects.len() != 1 {
