@@ -15,7 +15,7 @@ jobs:
 					- macos-latest
 
 		steps:
-			- name: Installing Rust
+			- name: Install Rustlang v1.47.0
 				uses: hecrj/setup-rust-action@v1
 				with:
 					rust-version: 1.47.0
