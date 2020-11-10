@@ -1,8 +1,10 @@
 [package]
 name = "sflynlang-parser"
 version = "0.1.0"
-authors = ["Sflynlang <sflynlang@outlook.com>"]
 edition = "2018"
+description = "Multiparadigm and cross-platform programming language"
+authors = ["Sflynlang Contributors"]
+license = "MIT"
 repository = "https://github.com/sflynlang/sflynlang-compiler"
 
 [lib]

@@ -11,7 +11,8 @@ pub fn parse(parser: &mut Parser) -> Result<DataType, Error> {
             parser.get_current_token()?.get_position(),
             DataTypes::Boolean,
         ));
-    } else if let Some(identifier_value) = parser.get_current_token()?.get_token().get_identifier()
+    } else if let Some(identifier_value) =
+        parser.get_current_token()?.get_token().get_identifier()
     {
         node = Some(DataType::new(
             parser.get_current_token()?.get_position(),

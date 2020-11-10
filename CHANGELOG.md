@@ -1,6 +1,7 @@
 # Unreleased
 
 ## 9/11/2020
+- (GitHub Actions) Add Rust CI.
 - Renamed to `sflynlang`.
 
 ## 8/11/2020

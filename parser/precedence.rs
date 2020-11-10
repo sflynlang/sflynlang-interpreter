@@ -26,9 +26,10 @@ impl Precedence {
             | Token::PercentEqual
             | Token::DoubleStarEqual => Self::Assignment,
 
-            Token::DoubleEqual | Token::NotEqual | Token::LessEqual | Token::GreaterEqual => {
-                Self::Equals
-            }
+            Token::DoubleEqual
+            | Token::NotEqual
+            | Token::LessEqual
+            | Token::GreaterEqual => Self::Equals,
 
             Token::Less | Token::Greater => Self::LessGreater,
 

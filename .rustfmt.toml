@@ -1,0 +1,4 @@
+edition = "2018"
+# license_template_path = "// Copyright 2020 Sflynlang Contributors. All rights reserved. MIT license."
+max_width = 80
+tab_spaces = 4
