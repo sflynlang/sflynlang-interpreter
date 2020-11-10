@@ -1,8 +1,10 @@
 # Unreleased
 
 ## 9/11/2020
+- Add Docker.
+- Add `add` command.
 - (GitHub Actions) Add Rust CI.
-- Renamed to `sflynlang`.
+- Rename to `sflynlang`.
 
 ## 8/11/2020
 - Add `-d`/`--debug` flag to `slang start` command.
