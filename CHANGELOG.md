@@ -1,6 +1,7 @@
 # Unreleased
 
 ## 9/11/2020
+- Add Docker.
 - Add `add` command.
 - (GitHub Actions) Add Rust CI.
 - Rename to `sflynlang`.
