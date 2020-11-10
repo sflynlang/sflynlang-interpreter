@@ -14,7 +14,9 @@ pub fn run(statements: Vec<Statement>, debug_mode: bool, file: &File) -> i32 {
     environment.set_debug_mode(debug_mode);
 
     for statement in statements.iter() {
-        if let Err(error) = evaluator::evaluate_statement(statement, &mut environment) {
+        if let Err(error) =
+            evaluator::evaluate_statement(statement, &mut environment)
+        {
             environment.add_error(error);
         }
     }

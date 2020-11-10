@@ -1,9 +1,12 @@
 [package]
 name = "sflyn"
 version = "0.1.0"
-authors = ["Sflynlang <sflynlang@outlook.com>"]
 edition = "2018"
+description = "Multiparadigm and cross-platform programming language"
+authors = ["Sflynlang Contributors"]
+license = "MIT"
 repository = "https://github.com/sflynlang/sflynlang-compiler"
+default-run = "sflyn"
 
 [[bin]]
 name = "sflyn"
@@ -16,3 +19,9 @@ serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8"
 sflynlang-compiler = { path = "../compiler", version = "0.1.0" }
 sflynlang-parser = { path = "../parser", version = "0.1.0" }
+
+[package.metadata.winres]
+OriginalFilename = "sflyn.exe"
+LegalCopyright = "© Sflynlang contributors & Sfllang. MIT licensed."
+ProductNAme = "Sflynlang"
+FileDescription = "Multiparadigm and cross-platform programming language"

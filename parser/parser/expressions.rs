@@ -4,15 +4,21 @@ use crate::{
     Error, Parser, Precedence, Token,
 };
 
-pub fn parse(parser: &mut Parser, precedence: Precedence) -> Result<Expression, Error> {
+pub fn parse(
+    parser: &mut Parser,
+    precedence: Precedence,
+) -> Result<Expression, Error> {
     let mut node: Option<Expression> = None;
 
-    if parser.current_token_is(Token::True)? || parser.current_token_is(Token::False)? {
+    if parser.current_token_is(Token::True)?
+        || parser.current_token_is(Token::False)?
+    {
         node = Some(Expression::new(
             parser.get_current_token()?.get_position(),
             Expressions::Boolean(parser.current_token_is(Token::True)?),
         ));
-    } else if let Some(identifier_value) = parser.get_current_token()?.get_token().get_identifier()
+    } else if let Some(identifier_value) =
+        parser.get_current_token()?.get_token().get_identifier()
     {
         let identifier_position = parser.get_current_token()?.get_position();
 
@@ -25,7 +31,8 @@ pub fn parse(parser: &mut Parser, precedence: Precedence) -> Result<Expression, 
             if parser.expect_token(Token::Equal)? {
                 parser.read_next_token()?;
 
-                argument_value = Some(Box::new(parse(parser, Precedence::Lowest)?));
+                argument_value =
+                    Some(Box::new(parse(parser, Precedence::Lowest)?));
             }
 
             node = Some(Expression::new(
@@ -81,12 +88,16 @@ pub fn parse(parser: &mut Parser, precedence: Precedence) -> Result<Expression, 
                 alternative: if_alternative,
             },
         ));
-    } else if let Some(number_value) = parser.get_current_token()?.get_token().get_number() {
+    } else if let Some(number_value) =
+        parser.get_current_token()?.get_token().get_number()
+    {
         node = Some(Expression::new(
             parser.get_current_token()?.get_position(),
             Expressions::Number(number_value),
         ));
-    } else if parser.current_token_is(Token::Minus)? || parser.current_token_is(Token::Not)? {
+    } else if parser.current_token_is(Token::Minus)?
+        || parser.current_token_is(Token::Not)?
+    {
         let prefix_position = parser.get_current_token()?.get_position();
         let prefix_token = parser.get_current_token()?.get_token();
 
@@ -94,9 +105,14 @@ pub fn parse(parser: &mut Parser, precedence: Precedence) -> Result<Expression, 
 
         node = Some(Expression::new(
             prefix_position,
-            Expressions::Prefix(prefix_token, Box::new(parse(parser, Precedence::Prefix)?)),
+            Expressions::Prefix(
+                prefix_token,
+                Box::new(parse(parser, Precedence::Prefix)?),
+            ),
         ));
-    } else if let Some(string_value) = parser.get_current_token()?.get_token().get_string() {
+    } else if let Some(string_value) =
+        parser.get_current_token()?.get_token().get_string()
+    {
         node = Some(Expression::new(
             parser.get_current_token()?.get_position(),
             Expressions::String(string_value),
@@ -143,7 +159,8 @@ pub fn parse(parser: &mut Parser, precedence: Precedence) -> Result<Expression, 
             || parser.expect_token(Token::PercentEqual)?
             || parser.expect_token(Token::DoubleStarEqual)?
         {
-            let assignment_position = parser.get_current_token()?.get_position();
+            let assignment_position =
+                parser.get_current_token()?.get_position();
             let assignment_sign = parser.get_current_token()?.get_token();
 
             parser.read_next_token()?;

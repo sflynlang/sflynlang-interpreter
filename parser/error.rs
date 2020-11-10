@@ -36,18 +36,30 @@ impl Error {
         }
     }
 
-    pub fn new_expect_arguments(position: Position, expect: usize, got: usize) -> Self {
+    pub fn new_expect_arguments(
+        position: Position,
+        expect: usize,
+        got: usize,
+    ) -> Self {
         Self::new(position, ErrorType::ExpectArguments(expect, got))
     }
 
-    pub fn new_expect_token(position: Position, expect: &str, got: &str) -> Self {
+    pub fn new_expect_token(
+        position: Position,
+        expect: &str,
+        got: &str,
+    ) -> Self {
         Self::new(
             position,
             ErrorType::ExpectToken(expect.to_string(), got.to_string()),
         )
     }
 
-    pub fn new_expect_type(position: Position, expect: &str, got: &str) -> Self {
+    pub fn new_expect_type(
+        position: Position,
+        expect: &str,
+        got: &str,
+    ) -> Self {
         Self::new(
             position,
             ErrorType::ExpectType(expect.to_string(), got.to_string()),
@@ -92,69 +104,96 @@ impl Error {
             // Get the expect arguments error.
             ErrorType::ExpectArguments(expected, got) => Diagnostic::error()
                 .with_message("Expected arguments")
-                .with_labels(vec![Label::primary((), self.get_position().get_range())
-                    .with_message(format!(
-                        "Expect `{}` arguments, got `{}` instead.",
-                        expected, got
-                    ))]),
+                .with_labels(vec![Label::primary(
+                    (),
+                    self.get_position().get_range(),
+                )
+                .with_message(format!(
+                    "Expect `{}` arguments, got `{}` instead.",
+                    expected, got
+                ))]),
 
             // Get the expect token error.
             ErrorType::ExpectToken(expected, got) => Diagnostic::error()
                 .with_message("Expected token")
-                .with_labels(vec![Label::primary((), self.get_position().get_range())
-                    .with_message(format!(
-                        "Expect `{}`, got `{}` instead.",
-                        expected, got
-                    ))]),
+                .with_labels(vec![Label::primary(
+                    (),
+                    self.get_position().get_range(),
+                )
+                .with_message(format!(
+                    "Expect `{}`, got `{}` instead.",
+                    expected, got
+                ))]),
 
             // Get the expect type token error.
             ErrorType::ExpectType(expected, got) => Diagnostic::error()
                 .with_message("Expected data type")
-                .with_labels(vec![Label::primary((), self.get_position().get_range())
-                    .with_message(format!(
-                        "Expect `{}` data type, got `{}` instead.",
-                        expected, got
-                    ))]),
+                .with_labels(vec![Label::primary(
+                    (),
+                    self.get_position().get_range(),
+                )
+                .with_message(format!(
+                    "Expect `{}` data type, got `{}` instead.",
+                    expected, got
+                ))]),
 
             // Get the lexical error.
-            ErrorType::Lexical(message) => {
-                Diagnostic::error()
-                    .with_message("Lexical")
-                    .with_labels(vec![
-                        Label::primary((), self.get_position().get_range()).with_message(message)
-                    ])
-            }
+            ErrorType::Lexical(message) => Diagnostic::error()
+                .with_message("Lexical")
+                .with_labels(vec![Label::primary(
+                    (),
+                    self.get_position().get_range(),
+                )
+                .with_message(message)]),
 
             // Get the name in use error.
             ErrorType::NameInUse(name, last_position) => Diagnostic::error()
                 .with_message("The identifier is already in use")
                 .with_labels(vec![
                     Label::primary((), self.get_position().get_range())
-                        .with_message(format!("The `{}` identifier is already in use.", name)),
+                        .with_message(format!(
+                            "The `{}` identifier is already in use.",
+                            name
+                        )),
                     Label::secondary((), last_position.get_range())
-                        .with_message(format!("The `{}` identifier is used here.", name)),
+                        .with_message(format!(
+                            "The `{}` identifier is used here.",
+                            name
+                        )),
                 ]),
 
             // Get the unknown identifier error.
             ErrorType::UnknownIdentifier(name) => Diagnostic::error()
                 .with_message("Unknown identifier")
-                .with_labels(vec![Label::primary((), self.get_position().get_range())
-                    .with_message(format!("Cannot find `{}` in this scope.", name))]),
+                .with_labels(vec![Label::primary(
+                    (),
+                    self.get_position().get_range(),
+                )
+                .with_message(format!(
+                    "Cannot find `{}` in this scope.",
+                    name
+                ))]),
 
             // Get the unknown position error.
             ErrorType::UnknownPosition(position) => Diagnostic::error()
                 .with_message("Unknown position")
-                .with_labels(vec![Label::primary((), self.get_position().get_range())
-                    .with_message(format!(
-                        "Cannot recognize the position at {}.",
-                        position
-                    ))]),
+                .with_labels(vec![Label::primary(
+                    (),
+                    self.get_position().get_range(),
+                )
+                .with_message(format!(
+                    "Cannot recognize the position at {}.",
+                    position
+                ))]),
 
             // Get the unknown token error.
             ErrorType::UnknownToken => Diagnostic::error()
                 .with_message("Unknown token")
-                .with_labels(vec![Label::primary((), self.get_position().get_range())
-                    .with_message("Cannot recognize this token.")]),
+                .with_labels(vec![Label::primary(
+                    (),
+                    self.get_position().get_range(),
+                )
+                .with_message("Cannot recognize this token.")]),
         }
     }
 

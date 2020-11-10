@@ -28,7 +28,8 @@ pub fn run(matches: &ArgMatches) -> i32 {
         }
 
         // Join the current directory path with the project name.
-        let project_path = utils::join_paths(&utils::get_current_directory(), project_name);
+        let project_path =
+            utils::join_paths(&utils::get_current_directory(), project_name);
 
         // Split the project path by slashes.
         let project_paths: Vec<&str> = project_path.split('/').collect();
@@ -77,7 +78,8 @@ pub fn run(matches: &ArgMatches) -> i32 {
         }
 
         // Get the main file path.
-        let main_file_path = format!("{}{}", project_path, project_settings.get_main());
+        let main_file_path =
+            format!("{}{}", project_path, project_settings.get_main());
 
         if let Err(_) = fs::File::create(&main_file_path) {
             println!("Cannot create the main file.");
