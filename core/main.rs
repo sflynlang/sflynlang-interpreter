@@ -5,10 +5,10 @@ pub mod utils;
 use clap::App;
 
 fn main() {
-    let matches = App::new("slang")
-        .about("Programming language.")
+    let matches = App::new("Sflynlang")
+        .about("Multiparadigm and cross-platform programming language.")
         .version("0.1.0")
-        .author("Daniel Solarte <danielsolartech@hotmail.com>")
+        .author("Sflynlang Contributors")
         .subcommand(commands::init::info())
         .subcommand(commands::start::info())
         .subcommand(commands::add::info())
