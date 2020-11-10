@@ -75,7 +75,9 @@ impl Statements {
         }
     }
 
-    pub fn get_variable(&self) -> Option<(bool, String, Option<DataType>, Option<Expression>)> {
+    pub fn get_variable(
+        &self,
+    ) -> Option<(bool, String, Option<DataType>, Option<Expression>)> {
         match self {
             Self::Variable {
                 is_mutable,

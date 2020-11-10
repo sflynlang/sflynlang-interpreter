@@ -24,8 +24,12 @@ impl Object {
 
     pub fn to_data_type(&self) -> DataType {
         match self.get_node() {
-            Objects::Boolean(_) => DataType::new(self.get_position(), DataTypes::Boolean),
-            Objects::Number(_) => DataType::new(self.get_position(), DataTypes::Number),
+            Objects::Boolean(_) => {
+                DataType::new(self.get_position(), DataTypes::Boolean)
+            }
+            Objects::Number(_) => {
+                DataType::new(self.get_position(), DataTypes::Number)
+            }
             Objects::Return(value) => {
                 if let Some(value) = value {
                     value.to_data_type()
@@ -33,8 +37,12 @@ impl Object {
                     DataType::new(self.get_position(), DataTypes::Void)
                 }
             }
-            Objects::String(_) => DataType::new(self.get_position(), DataTypes::String),
-            Objects::Void => DataType::new(self.get_position(), DataTypes::Void),
+            Objects::String(_) => {
+                DataType::new(self.get_position(), DataTypes::String)
+            }
+            Objects::Void => {
+                DataType::new(self.get_position(), DataTypes::Void)
+            }
         }
     }
 

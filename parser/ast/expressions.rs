@@ -60,7 +60,9 @@ pub enum Expressions {
 }
 
 impl Expressions {
-    pub fn get_argument(&self) -> Option<(String, Box<DataType>, Option<Box<Expression>>)> {
+    pub fn get_argument(
+        &self,
+    ) -> Option<(String, Box<DataType>, Option<Box<Expression>>)> {
         match self {
             Self::Argument {
                 name,
@@ -71,7 +73,9 @@ impl Expressions {
         }
     }
 
-    pub fn get_assignment(&self) -> Option<(Box<Expression>, Token, Box<Expression>)> {
+    pub fn get_assignment(
+        &self,
+    ) -> Option<(Box<Expression>, Token, Box<Expression>)> {
         match self {
             Self::Assignment {
                 identifier,
@@ -91,7 +95,9 @@ impl Expressions {
 
     pub fn get_call(&self) -> Option<(Box<Expression>, Vec<Expression>)> {
         match self {
-            Self::Call(identifier, arguments) => Some((identifier.clone(), arguments.clone())),
+            Self::Call(identifier, arguments) => {
+                Some((identifier.clone(), arguments.clone()))
+            }
             _ => None,
         }
     }
@@ -103,18 +109,26 @@ impl Expressions {
         }
     }
 
-    pub fn get_if(&self) -> Option<(Box<Expression>, Vec<Statement>, Vec<Statement>)> {
+    pub fn get_if(
+        &self,
+    ) -> Option<(Box<Expression>, Vec<Statement>, Vec<Statement>)> {
         match self {
             Self::If {
                 condition,
                 consequence,
                 alternative,
-            } => Some((condition.clone(), consequence.clone(), alternative.clone())),
+            } => Some((
+                condition.clone(),
+                consequence.clone(),
+                alternative.clone(),
+            )),
             _ => None,
         }
     }
 
-    pub fn get_infix(&self) -> Option<(Box<Expression>, Token, Box<Expression>)> {
+    pub fn get_infix(
+        &self,
+    ) -> Option<(Box<Expression>, Token, Box<Expression>)> {
         match self {
             Self::Infix {
                 left,
@@ -127,7 +141,9 @@ impl Expressions {
 
     pub fn get_method(&self) -> Option<(Box<Expression>, Box<Expression>)> {
         match self {
-            Self::Method(identifier, property) => Some((identifier.clone(), property.clone())),
+            Self::Method(identifier, property) => {
+                Some((identifier.clone(), property.clone()))
+            }
             _ => None,
         }
     }
@@ -141,7 +157,9 @@ impl Expressions {
 
     pub fn get_prefix(&self) -> Option<(Token, Box<Expression>)> {
         match self {
-            Self::Prefix(operator, value) => Some((operator.clone(), value.clone())),
+            Self::Prefix(operator, value) => {
+                Some((operator.clone(), value.clone()))
+            }
             _ => None,
         }
     }
@@ -214,7 +232,9 @@ impl Expressions {
                 operator,
                 right,
             } => format!("{} {} {}", left, operator, right),
-            Self::Method(identifier, property) => format!("{}.{}", identifier, property),
+            Self::Method(identifier, property) => {
+                format!("{}.{}", identifier, property)
+            }
             Self::Number(_) => String::from("Number"),
             Self::Prefix(operator, value) => format!("{}{}", operator, value),
             Self::String(_) => String::from("String"),

@@ -12,7 +12,7 @@ impl Position {
     /// Create a new position object.
     ///
     /// ```rust
-    /// use slang_parser::Position;
+    /// use sflynlang_parser::Position;
     ///
     /// fn main() {
     ///     let position = Position::new(0, 0, 1, 1);
@@ -21,7 +21,12 @@ impl Position {
     ///     // Output: Ln 1, Col 1
     /// }
     /// ```
-    pub fn new(start_position: usize, end_position: usize, line: usize, column: usize) -> Self {
+    pub fn new(
+        start_position: usize,
+        end_position: usize,
+        line: usize,
+        column: usize,
+    ) -> Self {
         Self {
             start_position,
             end_position,

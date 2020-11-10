@@ -36,7 +36,8 @@ pub fn parse(parser: &mut Parser) -> Result<Statement, Error> {
 
         parser.read_next_token()?;
 
-        let function_name_and_arguments = expressions::parse(parser, Precedence::Lowest)?;
+        let function_name_and_arguments =
+            expressions::parse(parser, Precedence::Lowest)?;
 
         if function_name_and_arguments.node.get_call().is_none() {
             return Err(Error::new_expect_token(
@@ -46,7 +47,8 @@ pub fn parse(parser: &mut Parser) -> Result<Statement, Error> {
             ));
         }
 
-        let function_name: Box<Expression> = function_name_and_arguments.node.get_call().unwrap().0;
+        let function_name: Box<Expression> =
+            function_name_and_arguments.node.get_call().unwrap().0;
 
         if function_name.node.get_identifier().is_none() {
             return Err(Error::new_expect_token(
@@ -103,7 +105,8 @@ pub fn parse(parser: &mut Parser) -> Result<Statement, Error> {
         {
             parser.read_next_token()?;
 
-            return_value = Some(expressions::parse(parser, Precedence::Lowest)?);
+            return_value =
+                Some(expressions::parse(parser, Precedence::Lowest)?);
         }
 
         parser.expect_token(Token::Semicolon)?;
@@ -114,7 +117,9 @@ pub fn parse(parser: &mut Parser) -> Result<Statement, Error> {
         ));
     }
 
-    if parser.current_token_is(Token::Let)? || parser.current_token_is(Token::Const)? {
+    if parser.current_token_is(Token::Let)?
+        || parser.current_token_is(Token::Const)?
+    {
         let variable_position = parser.get_current_token()?.get_position();
         let variable_mutable = parser.current_token_is(Token::Let)?;
 
@@ -124,7 +129,9 @@ pub fn parse(parser: &mut Parser) -> Result<Statement, Error> {
 
         parser.expect_token(Token::Semicolon)?;
 
-        return if let Some((identifier, data_type, value)) = variable_data.node.get_argument() {
+        return if let Some((identifier, data_type, value)) =
+            variable_data.node.get_argument()
+        {
             Ok(Statement::new(
                 variable_position,
                 Statements::Variable {
@@ -149,6 +156,9 @@ pub fn parse(parser: &mut Parser) -> Result<Statement, Error> {
 
     Ok(Statement::new(
         parser.get_current_token()?.get_position(),
-        Statements::Expression(Box::new(expressions::parse(parser, Precedence::Lowest)?)),
+        Statements::Expression(Box::new(expressions::parse(
+            parser,
+            Precedence::Lowest,
+        )?)),
     ))
 }

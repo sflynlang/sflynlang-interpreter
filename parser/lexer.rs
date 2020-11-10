@@ -54,7 +54,8 @@ impl Lexer {
         self.current_character = self.next_character;
 
         // Get the character of the next position and replace the next character with it.
-        self.next_character = self.content.chars().skip(self.next_position).next();
+        self.next_character =
+            self.content.chars().skip(self.next_position).next();
 
         // Append one to the current position.
         self.current_position += 1;
@@ -73,7 +74,9 @@ impl Lexer {
     fn skip_whitespaces(&mut self) {
         loop {
             // Check if the current character is a whitespace.
-            if self.current_character == Some(' ') || self.current_character == Some('\t') {
+            if self.current_character == Some(' ')
+                || self.current_character == Some('\t')
+            {
                 // Read the next character.
                 self.read_next_character();
                 continue;
@@ -87,7 +90,8 @@ impl Lexer {
     /// Check if the current character is a number.
     fn is_number_begin(&self) -> bool {
         // Check if the current character exists and is a number.
-        self.current_character.is_some() && self.current_character.unwrap().is_numeric()
+        self.current_character.is_some()
+            && self.current_character.unwrap().is_numeric()
     }
 
     fn read_number(&mut self) -> Result<Token, Error> {
@@ -143,7 +147,8 @@ impl Lexer {
     /// Check if the current character is a single quote or a double quote.
     fn is_string_begin(&self) -> bool {
         // Check if the current character is a single quote or a double quote.
-        self.current_character == Some('\'') || self.current_character == Some('"')
+        self.current_character == Some('\'')
+            || self.current_character == Some('"')
     }
 
     fn read_string(&mut self, quote: char) -> Result<Token, Error> {
@@ -163,9 +168,14 @@ impl Lexer {
         // Check if the current character is not the initial quote.
         while self.current_character != Some(quote) {
             // Check if the current character is an end of line or does not exist.
-            if self.current_character == Some('\n') || self.current_character == None {
+            if self.current_character == Some('\n')
+                || self.current_character == None
+            {
                 // Return an error.
-                return Err(Error::new_lexical(position, "You need to close the quote."));
+                return Err(Error::new_lexical(
+                    position,
+                    "You need to close the quote.",
+                ));
             }
 
             // Append the current character and read the next character.
@@ -520,12 +530,16 @@ impl Lexer {
                 // Check if the current character is the begin of a string.
                 else if self.is_string_begin() {
                     // Set the token as the string token.
-                    token = self.read_string(self.current_character.unwrap())?;
+                    token =
+                        self.read_string(self.current_character.unwrap())?;
                 }
                 // Is not a valid character.
                 else {
                     // Return an error.
-                    return Err(Error::new_lexical(position, "Unknown character."));
+                    return Err(Error::new_lexical(
+                        position,
+                        "Unknown character.",
+                    ));
                 }
             }
         }

@@ -1,7 +1,10 @@
 use crate::{Object, Objects};
 use sflynlang_parser::{Error, Position};
 
-pub fn print(objects: Vec<Object>, position: Position) -> Result<Object, Error> {
+pub fn print(
+    objects: Vec<Object>,
+    position: Position,
+) -> Result<Object, Error> {
     if objects.len() != 1 {
         return Err(Error::new_expect_arguments(position, 1, objects.len()));
     }
@@ -21,7 +24,11 @@ pub fn print(objects: Vec<Object>, position: Position) -> Result<Object, Error> 
     Ok(Object::new(object.get_position(), Objects::Void))
 }
 
-pub fn debug(objects: Vec<Object>, position: Position, debug_mode: bool) -> Result<Object, Error> {
+pub fn debug(
+    objects: Vec<Object>,
+    position: Position,
+    debug_mode: bool,
+) -> Result<Object, Error> {
     if objects.len() != 1 {
         return Err(Error::new_expect_arguments(position, 1, objects.len()));
     }

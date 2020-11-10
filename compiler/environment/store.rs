@@ -39,7 +39,8 @@ impl Store {
 
     pub fn has_object_with_outer(&self, key: &String) -> bool {
         self.has_object(key)
-            || (self.get_outer().is_some() && self.get_outer().unwrap().has_object_with_outer(&key))
+            || (self.get_outer().is_some()
+                && self.get_outer().unwrap().has_object_with_outer(&key))
     }
 
     pub fn has_key(&self, key: &String) -> bool {

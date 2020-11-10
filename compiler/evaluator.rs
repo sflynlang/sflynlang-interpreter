@@ -20,11 +20,15 @@ pub fn evaluate_expression(
             let mut arguments_objects: Vec<Object> = Vec::new();
 
             for argument in arguments.iter() {
-                arguments_objects.push(evaluate_expression(argument, environment)?);
+                arguments_objects
+                    .push(evaluate_expression(argument, environment)?);
             }
 
             if identifier_name == "print" {
-                return builtins::print(arguments_objects, identifier.get_position());
+                return builtins::print(
+                    arguments_objects,
+                    identifier.get_position(),
+                );
             } else if identifier_name == "debug" {
                 return builtins::debug(
                     arguments_objects,
