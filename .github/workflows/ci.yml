@@ -3,7 +3,7 @@ name: Rust CI
 on: [push, pull_request]
 
 jobs:
-  build:
+	build:
 		name: Running on ${{ matrix.os }}
 		runs-on: ${{ matrix.os }}
 
