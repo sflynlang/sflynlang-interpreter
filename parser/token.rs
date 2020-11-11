@@ -21,6 +21,8 @@ pub enum Token {
     If,
     Else,
 
+    Interface,
+
     // Data Types
     Boolean,
     String,
@@ -35,6 +37,7 @@ pub enum Token {
 
     Equal,
     DoubleEqual,
+    EqualGreater,
 
     Not,
     NotEqual,
@@ -93,6 +96,8 @@ impl Token {
             "if" => Token::If,
             "else" => Token::Else,
 
+            "interface" => Token::Interface,
+
             // Data Types
             "boolean" => Token::Boolean,
             "string" => Token::String,
@@ -146,6 +151,8 @@ impl Token {
             Self::If => String::from("if"),
             Self::Else => String::from("else"),
 
+            Self::Interface => String::from("interface"),
+
             // Data Types
             Self::Boolean => String::from("boolean"),
             Self::String => String::from("string"),
@@ -160,6 +167,7 @@ impl Token {
 
             Self::Equal => String::from("="),
             Self::DoubleEqual => String::from("=="),
+            Self::EqualGreater => String::from("=>"),
 
             Self::Not => String::from("!"),
             Self::NotEqual => String::from("!="),

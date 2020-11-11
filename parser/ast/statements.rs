@@ -26,6 +26,8 @@ pub enum Statements {
         body: Vec<Statement>,
     },
 
+    Interface(String, Vec<Expression>),
+
     Return(Option<Expression>),
 
     Variable {
@@ -64,6 +66,15 @@ impl Statements {
                 return_type.clone(),
                 body.clone(),
             )),
+            _ => None,
+        }
+    }
+
+    pub fn get_interface(&self) -> Option<(String, Vec<Expression>)> {
+        match self {
+            Self::Interface(name, properties) => {
+                Some((name.clone(), properties.clone()))
+            }
             _ => None,
         }
     }
@@ -115,6 +126,15 @@ impl Statements {
                     .map(|stmt| stmt.to_string())
                     .collect::<Vec<String>>()
                     .join("\n"),
+            ),
+            Self::Interface(name, properties) => format!(
+                "interface {} {{\n{}\n}}",
+                name,
+                properties
+                    .iter()
+                    .map(|prop| prop.to_string())
+                    .collect::<Vec<String>>()
+                    .join(";\n"),
             ),
             Self::Return(value) => format!(
                 "return{};",

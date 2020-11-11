@@ -18,11 +18,11 @@ pub enum Precedence {
 
 impl Precedence {
     /// Get the precedence of a token.
-    /// 
+    ///
     /// # Example
     /// ```rust
     /// use sflynlang_parser::{Precedence, Token};
-    /// 
+    ///
     /// fn main() {
     ///     println!("Precedence: {}", Precedence::from_token(Token::Equal));
     ///     // Output: Precendence: Assignment
@@ -75,7 +75,8 @@ impl Precedence {
             Self::Call => "Call",
             Self::Index => "Index",
             Self::Method => "Method",
-        }).to_string()
+        })
+        .to_string()
     }
 }
 
@@ -100,7 +101,10 @@ fn test_precedence() {
     }
 
     // Lowest
-    equal_precedence!(Token::Identifier(String::from("identifier")), Precedence::Lowest);
+    equal_precedence!(
+        Token::Identifier(String::from("identifier")),
+        Precedence::Lowest
+    );
     equal_precedence!(Token::Str(String::from("'string'")), Precedence::Lowest);
     equal_precedence!(Token::Num(1.0), Precedence::Lowest);
 
@@ -116,6 +120,8 @@ fn test_precedence() {
     equal_precedence!(Token::If, Precedence::Lowest);
     equal_precedence!(Token::Else, Precedence::Lowest);
 
+    equal_precedence!(Token::Interface, Precedence::Lowest);
+
     equal_precedence!(Token::Boolean, Precedence::Lowest);
     equal_precedence!(Token::String, Precedence::Lowest);
     equal_precedence!(Token::Number, Precedence::Lowest);
@@ -124,6 +130,8 @@ fn test_precedence() {
     equal_precedence!(Token::Comma, Precedence::Lowest);
     equal_precedence!(Token::Colon, Precedence::Lowest);
     equal_precedence!(Token::Semicolon, Precedence::Lowest);
+
+    equal_precedence!(Token::EqualGreater, Precedence::Lowest);
 
     equal_precedence!(Token::RightParentheses, Precedence::Lowest);
 

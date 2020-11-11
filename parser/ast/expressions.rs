@@ -20,6 +20,8 @@ impl fmt::Display for Expression {
 
 #[derive(Clone, Debug)]
 pub enum Expressions {
+    Array(Vec<Expression>),
+
     Argument {
         name: String,
         data_type: Box<DataType>,
@@ -36,6 +38,8 @@ pub enum Expressions {
 
     Call(Box<Expression>, Vec<Expression>),
 
+    Group(Box<Expression>),
+
     Identifier(String),
 
     If {
@@ -43,6 +47,8 @@ pub enum Expressions {
         consequence: Vec<Statement>,
         alternative: Vec<Statement>,
     },
+
+    Index(Box<Expression>, Box<Expression>),
 
     Infix {
         left: Box<Expression>,
@@ -60,6 +66,13 @@ pub enum Expressions {
 }
 
 impl Expressions {
+    pub fn get_array(&self) -> Option<Vec<Expression>> {
+        match self {
+            Self::Array(values) => Some(values.clone()),
+            _ => None,
+        }
+    }
+
     pub fn get_argument(
         &self,
     ) -> Option<(String, Box<DataType>, Option<Box<Expression>>)> {
@@ -102,6 +115,13 @@ impl Expressions {
         }
     }
 
+    pub fn get_group(&self) -> Option<Box<Expression>> {
+        match self {
+            Self::Group(value) => Some(value.clone()),
+            _ => None,
+        }
+    }
+
     pub fn get_identifier(&self) -> Option<String> {
         match self {
             Self::Identifier(value) => Some(value.clone()),
@@ -122,6 +142,15 @@ impl Expressions {
                 consequence.clone(),
                 alternative.clone(),
             )),
+            _ => None,
+        }
+    }
+
+    pub fn get_index(&self) -> Option<(Box<Expression>, Box<Expression>)> {
+        match self {
+            Self::Index(identifier, index) => {
+                Some((identifier.clone(), index.clone()))
+            }
             _ => None,
         }
     }
@@ -173,6 +202,14 @@ impl Expressions {
 
     pub fn to_string(&self) -> String {
         match self {
+            Self::Array(values) => format!(
+                "[{}]",
+                values
+                    .iter()
+                    .map(|value| value.to_string())
+                    .collect::<Vec<String>>()
+                    .join(", ")
+            ),
             Self::Argument {
                 name,
                 data_type,
@@ -190,7 +227,7 @@ impl Expressions {
                 identifier,
                 sign,
                 value,
-            } => format!("{} {} {};", identifier, sign, value,),
+            } => format!("{} {} {};", identifier, sign, value),
             Self::Boolean(_) => String::from("Boolean"),
             Self::Call(identifier, arguments) => format!(
                 "{}({})",
@@ -201,6 +238,7 @@ impl Expressions {
                     .collect::<Vec<String>>()
                     .join(", ")
             ),
+            Self::Group(value) => format!("({})", value),
             Self::Identifier(value) => value.clone(),
             Self::If {
                 condition,
@@ -227,6 +265,9 @@ impl Expressions {
                     String::new()
                 },
             ),
+            Self::Index(identifier, index) => {
+                format!("{}[{}]", identifier, index)
+            }
             Self::Infix {
                 left,
                 operator,

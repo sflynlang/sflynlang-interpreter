@@ -240,6 +240,15 @@ impl Lexer {
                     token = Token::DoubleEqual;
                 }
 
+                // Check if the next character is a greater.
+                Some('>') => {
+                    // Read the next character.
+                    self.read_next_character();
+
+                    // Set the token as an equal greater.
+                    token = Token::EqualGreater;
+                }
+
                 // Is other character
                 _ => {
                     // Set the token as an equal.
@@ -581,7 +590,7 @@ impl Lexer {
 }
 
 #[test]
-fn lexer_text() {
+fn test_lexer() {
     use crate::{Lexer, Position, Tok, Token};
     use codespan_reporting::files::SimpleFile;
 
@@ -590,7 +599,7 @@ fn lexer_text() {
         format!(
             "{}\n{}",
             "identifier 'string' \"string\" 10 let const func return if else",
-            ". , : ; = == ! != + += - -= * *= ** **= / /= % %= < <= > >= () {} [] || &&"
+            ". , : ; = == ! != + += - -= * *= ** **= / /= % %= < <= > >= () {} [] || && =>"
         ),
     );
 
@@ -665,7 +674,8 @@ fn lexer_text() {
         is_valid_token!(40, 129, 1, 2, 68, Token::RightBracket);
         is_valid_token!(41, 131, 2, 2, 70, Token::DoubleVBar);
         is_valid_token!(42, 134, 2, 2, 73, Token::DoubleAmper);
-        is_valid_token!(43, 136, 1, 2, 75, Token::EndOfFile);
+        is_valid_token!(43, 137, 2, 2, 76, Token::EqualGreater);
+        is_valid_token!(44, 139, 1, 2, 78, Token::EndOfFile);
     }
     // Does not have tokens.
     else if let Err(error) = lexer_run {
