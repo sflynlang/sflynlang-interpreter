@@ -1,8 +1,9 @@
 # Unreleased (0.1.0)
 
 ## 11/11/2020
+- (Examples) Add Label interface example.
 - (Parser) Add `interface` statement.
-- (Parser) Add array, groups and index expressions.
+- (Parser) Add array, groups, hashmap and index expressions.
 - (Parser) Add array, function and hashmap data types.
 - (Parser/Tests) Add precedence and errors tests.
 - (Readme) Add guidelines to testing and compiling.
