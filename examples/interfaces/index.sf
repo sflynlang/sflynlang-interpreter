@@ -1,0 +1,11 @@
+interface Label {
+    message: string;
+}
+
+func printLabel(label: Label) {
+    print("Message from the label: " + label.message)
+}
+
+printLabel({
+    message: "Size 10"
+})
