@@ -2,8 +2,9 @@ use crate::{File, Position};
 
 use codespan_reporting::diagnostic::{Diagnostic, Label};
 use codespan_reporting::term::{
-    self,
+    emit,
     termcolor::{ColorChoice, StandardStream},
+    Config,
 };
 
 #[derive(Clone, Debug)]
@@ -23,12 +24,32 @@ pub struct Error {
     /// Position object.
     position: Position,
 
-    // Error type object.
+    /// Error type object.
     error_type: ErrorType,
 }
 
 impl Error {
-    /// Create a new error object using a position and an error type.
+    /// Create a new error object.
+    ///
+    /// # Example
+    /// ```rust
+    /// use sflynlang_parser::{Error, ErrorType, File, Position};
+    ///
+    /// fn main() {
+    ///     let file = File::new(
+    ///         String::from("test.sf"),
+    ///         String::from("~"),
+    ///     );
+    ///
+    ///     let error_position = Position::new(0, 0, 1, 1);
+    ///
+    ///     let error_type = ErrorType::UnknownToken;
+    ///
+    ///     let error = Error::new(error_position, error_type);
+    ///
+    ///     error.show(&file);
+    /// }
+    /// ```
     pub fn new(position: Position, error_type: ErrorType) -> Self {
         Self {
             position,
@@ -36,6 +57,25 @@ impl Error {
         }
     }
 
+    /// Create a new expect arguments length error.
+    ///
+    /// # Example
+    /// ```rust
+    /// use sflynlang_parser::{Error, File, Position};
+    ///
+    /// fn main() {
+    ///     let file = File::new(
+    ///         String::from("test.sf"),
+    ///         String::from("print()"),
+    ///     );
+    ///
+    ///     let error_position = Position::new(0, 4, 1, 1);
+    ///
+    ///     let error = Error::new_expect_arguments(error_position, 1, 0);
+    ///
+    ///     error.show(&file);
+    /// }
+    /// ```
     pub fn new_expect_arguments(
         position: Position,
         expect: usize,
@@ -44,6 +84,25 @@ impl Error {
         Self::new(position, ErrorType::ExpectArguments(expect, got))
     }
 
+    /// Create a new expect token error.
+    ///
+    /// # Example
+    /// ```rust
+    /// use sflynlang_parser::{Error, File, Position};
+    ///
+    /// fn main() {
+    ///     let file = File::new(
+    ///         String::from("test.sf"),
+    ///         String::from("func 10() {}"),
+    ///     );
+    ///
+    ///     let error_position = Position::new(5, 6, 1, 6);
+    ///
+    ///     let error = Error::new_expect_token(error_position, "Identifier", "Number");
+    ///
+    ///     error.show(&file);
+    /// }
+    /// ```
     pub fn new_expect_token(
         position: Position,
         expect: &str,
@@ -55,6 +114,25 @@ impl Error {
         )
     }
 
+    /// Create a new expect data type error.
+    ///
+    /// # Example
+    /// ```rust
+    /// use sflynlang_parser::{Error, File, Position};
+    ///
+    /// fn main() {
+    ///     let file = File::new(
+    ///         String::from("test.sf"),
+    ///         String::from("print(10)"),
+    ///     );
+    ///
+    ///     let error_position = Position::new(6, 7, 1, 7);
+    ///
+    ///     let error = Error::new_expect_type(error_position, "String", "Number");
+    ///
+    ///     error.show(&file);
+    /// }
+    /// ```
     pub fn new_expect_type(
         position: Position,
         expect: &str,
@@ -66,15 +144,72 @@ impl Error {
         )
     }
 
-    /// Create a new lexical error object using a position and a message.
+    /// Create a new lexical error.
+    ///
+    /// # Example
+    /// ```rust
+    /// use sflynlang_parser::{Error, File, Position};
+    ///
+    /// fn main() {
+    ///     let file = File::new(
+    ///         String::from("test.sf"),
+    ///         String::from("10,10,10"),
+    ///     );
+    ///
+    ///     let error_position = Position::new(0, 7, 1, 1);
+    ///     let error_message = "Cannot recognize this as a number.";
+    ///
+    ///     let error = Error::new_lexical(error_position, error_message);
+    ///
+    ///     error.show(&file);
+    /// }
+    /// ```
     pub fn new_lexical(position: Position, message: &str) -> Self {
         Self::new(position, ErrorType::Lexical(message.to_string()))
     }
 
+    /// Create a new unknown identifier error.
+    ///
+    /// # Example
+    /// ```rust
+    /// use sflynlang_parser::{Error, File, Position};
+    ///
+    /// fn main() {
+    ///     let file = File::new(
+    ///         String::from("test.sf"),
+    ///         String::from("print1()"),
+    ///     );
+    ///
+    ///     let error_position = Position::new(0, 5, 1, 1);
+    ///
+    ///     let error = Error::new_unknown_identifier(error_position, String::from("print1"));
+    ///
+    ///     error.show(&file);
+    /// }
+    /// ```
     pub fn new_unknown_identifier(position: Position, name: String) -> Self {
         Self::new(position, ErrorType::UnknownIdentifier(name))
     }
 
+    /// Create a new unknown position error.
+    ///
+    /// # Example
+    /// ```rust
+    /// use sflynlang_parser::{Error, File, Position};
+    ///
+    /// fn main() {
+    ///     let file = File::new(
+    ///         String::from("test.sf"),
+    ///         String::from(""),
+    ///     );
+    ///
+    ///     let unknown_position = Position::new(1, 1, 1, 2);
+    ///
+    ///     let error = Error::new_unknown_position(unknown_position);
+    ///
+    ///     error.show(&file);
+    /// }
+    /// ```
     pub fn new_unknown_position(position: Position) -> Self {
         Self::new(
             Position::new(0, 0, 1, 1),
@@ -82,6 +217,25 @@ impl Error {
         )
     }
 
+    /// Create a new unknown token error.
+    ///
+    /// # Example
+    /// ```rust
+    /// use sflynlang_parser::{Error, File, Position};
+    ///
+    /// fn main() {
+    ///     let file = File::new(
+    ///         String::from("test.sf"),
+    ///         String::from("~"),
+    ///     );
+    ///
+    ///     let error_position = Position::new(0, 0, 1, 1);
+    ///
+    ///     let error = Error::new_unknown_token(error_position);
+    ///
+    ///     error.show(&file);
+    /// }
+    /// ```
     pub fn new_unknown_token(position: Position) -> Self {
         Self::new(position, ErrorType::UnknownToken)
     }
@@ -201,9 +355,9 @@ impl Error {
     ///
     /// Read more about the term object [clicking here](https://docs.rs/codespan-reporting/0.9.5/codespan_reporting/term/index.html).
     pub fn show(&self, file: &File) {
-        if let Err(error) = term::emit(
+        if let Err(error) = emit(
             &mut StandardStream::stderr(ColorChoice::Always).lock(),
-            &term::Config::default(),
+            &Config::default(),
             file,
             &self.to_diagnostic(),
         ) {

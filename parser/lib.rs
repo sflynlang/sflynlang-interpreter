@@ -6,7 +6,7 @@ mod position;
 mod precedence;
 mod token;
 
-pub use error::Error;
+pub use error::{Error, ErrorType};
 pub use lexer::Lexer;
 pub use parser::Parser;
 pub use position::Position;
