@@ -161,6 +161,9 @@ pub fn parse(parser: &mut Parser) -> Result<Statement, Error> {
         // Read the next token.
         parser.read_next_token()?;
 
+        // Ignore the end of lines.
+        parser.skip_eol()?;
+
         // Initialize the methods expressions list.
         let mut methods: Vec<Expression> = Vec::new();
 
@@ -198,6 +201,9 @@ pub fn parse(parser: &mut Parser) -> Result<Statement, Error> {
 
             // Read the next token.
             parser.read_next_token()?;
+
+            // Ignore the end of lines.
+            parser.skip_eol()?;
         }
 
         Ok(Statement::new(
