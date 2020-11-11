@@ -4,6 +4,8 @@ use crate::{
     Error, Parser, Precedence, Token,
 };
 
+use std::collections::HashMap;
+
 pub fn parse(
     parser: &mut Parser,
     precedence: Precedence,
@@ -72,6 +74,66 @@ pub fn parse(
         node = Some(Expression::new(
             group_position,
             Expressions::Group(Box::new(group_exp)),
+        ));
+    }
+    // Parse hashmap:
+    // Check if the current token is a left brace.
+    else if parser.current_token_is(Token::LeftBrace)? {
+        // Get the current token position as the hashmap position.
+        let hashmap_position = parser.get_current_token()?.get_position();
+
+        // Read the next token.
+        parser.read_next_token()?;
+
+        // Ignore the end of lines.
+        parser.skip_eol()?;
+
+        // Initialize the hashmap data.
+        let mut hashmap_data: HashMap<String, Expression> = HashMap::new();
+
+        while !parser.current_token_is(Token::RightBrace)? {
+            // Get the identifier token value.
+            if let Some(identifier_value) =
+                parser.get_current_token()?.get_token().get_identifier()
+            {
+                // Check if the next token is not a colon.
+                if !parser.expect_token(Token::Colon)? {
+                    return Err(Error::new_expect_token(
+                        parser.get_next_token()?.get_position(),
+                        ":",
+                        &parser.get_next_token()?.get_token().to_string(),
+                    ));
+                }
+
+                // Read the next token.
+                parser.read_next_token()?;
+
+                // Append the data to the hashmap data.
+                hashmap_data.insert(
+                    identifier_value,
+                    parse(parser, Precedence::Lowest)?,
+                );
+
+                // Check if the next token is a comma and read the next token.
+                parser.expect_token(Token::Comma)?;
+
+                // Read the next token.
+                parser.read_next_token()?;
+
+                // Ignore the end of lines.
+                parser.skip_eol()?;
+            } else {
+                return Err(Error::new_expect_token(
+                    parser.get_current_token()?.get_position(),
+                    "Identifier",
+                    &parser.get_current_token()?.get_token().to_string(),
+                ));
+            }
+        }
+
+        node = Some(Expression::new(
+            hashmap_position,
+            Expressions::HashMap(hashmap_data),
         ));
     }
     // Parse argument or identifier.

@@ -2,7 +2,7 @@ use crate::{
     ast::{DataType, Node, Statement},
     Token,
 };
-use std::fmt;
+use std::{collections::HashMap, fmt};
 
 pub type Expression = Node<Expressions>;
 
@@ -39,6 +39,8 @@ pub enum Expressions {
     Call(Box<Expression>, Vec<Expression>),
 
     Group(Box<Expression>),
+
+    HashMap(HashMap<String, Expression>),
 
     Identifier(String),
 
@@ -118,6 +120,13 @@ impl Expressions {
     pub fn get_group(&self) -> Option<Box<Expression>> {
         match self {
             Self::Group(value) => Some(value.clone()),
+            _ => None,
+        }
+    }
+
+    pub fn get_hashmap(&self) -> Option<HashMap<String, Expression>> {
+        match self {
+            Self::HashMap(data) => Some(data.clone()),
             _ => None,
         }
     }
@@ -239,6 +248,13 @@ impl Expressions {
                     .join(", ")
             ),
             Self::Group(value) => format!("({})", value),
+            Self::HashMap(data) => format!(
+                "{{\n{}\n}}",
+                data.iter()
+                    .map(|(key, value)| format!("{}: {}", key, value))
+                    .collect::<Vec<String>>()
+                    .join(",\n")
+            ),
             Self::Identifier(value) => value.clone(),
             Self::If {
                 condition,
