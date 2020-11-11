@@ -5,11 +5,9 @@
 
 This project contains the source code of the interpreter for the Sflynlang programming language. It is written in Rustlang.
 
----
 ## Pre-requisites
 - [Rustlang](https://rustup.rs/)
 
----
 ## Structure of Directories
 In this project you'll find 4 principal directories:
 
@@ -21,7 +19,6 @@ In this project you'll find 4 principal directories:
 
 4. **Examples**: Here is allowed the examples of Sflynlang code.
 
----
 ## Compiling
 1. Download the [pre-requisites](#Pre-requisites).
 
@@ -34,7 +31,6 @@ In this project you'll find 4 principal directories:
 
 4. Congratulations! You've compiled the Sflynlang interpreter project, now you find a binary file (`.exe` on Windows) in `PROJECT_DIRECTORY/target/release/sflyn`.
 
----
 ## Testing
 To check if the code works fine, we build tests of our code and to test them use `cargo test` (Add `--release` flag to run in a production context).
 
@@ -62,12 +58,10 @@ $ sflyn start
 
 7. Congratulations! You've runned your first Sflynlang project on Docker.
 
----
 ## Social Networks
 - [Twitter](https://twitter.com/sflynlang)
 - [Facebook](https://facebook.com/sflynlang)
 
----
 ## Contributors
 - **Daniel Solarte** - Initial Work - [GitHub](https://github.com/danielsolartech)
 - **Maria Antonella** - Icon Design - [Instagram](https://instagram.com/elementaInsky)
@@ -75,6 +69,5 @@ $ sflyn start
 
 You can also view the [contributors list](https://github.com/sflynlang/sflynlang-interpreter/contributors) here.
 
----
 ## Licensing
 This project is under the MIT license. See the [LICENSE](./LICENSE) file for more information.
