@@ -42,7 +42,7 @@ Also, this command is used by the `Rust CI` workflow to check if the code to mer
 
 ## Contributors
 - **Daniel Solarte** - Initial Work - [GitHub](https://github.com/danielsolartech)
-- **Maria Antonella** - Icon Design - [Instagram](https://instagram.com/elementaInsky)
+- **Maria Antonella** - Icon Design - [Instagram](https://instagram.com/elementalnsky)
 - **Jheyson Saavedra** - Docker - [GitHub](https://github.com/JheysonDev)
 
 You can also view the [contributors list](https://github.com/sflynlang/sflynlang-interpreter/contributors) here.
