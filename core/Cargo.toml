@@ -2,7 +2,7 @@
 name = "sflyn"
 version = "0.1.0"
 edition = "2018"
-description = "Multiparadigm and cross-platform programming language"
+description = "High-level programming language"
 authors = ["Sflynlang Contributors"]
 license = "MIT"
 repository = "https://github.com/sflynlang/sflynlang-compiler"
@@ -14,10 +14,6 @@ path = "main.rs"
 
 [dependencies]
 clap = "3.0.0-beta.2"
-git2 = "0.13"
-semver = { version = "0.10", features = ["serde"] }
-serde = { version = "1.0", features = ["derive"] }
-serde_yaml = "0.8"
 sflynlang-compiler = { path = "../compiler", version = "0.1.0" }
 sflynlang-parser = { path = "../parser", version = "0.1.0" }
 
@@ -25,4 +21,4 @@ sflynlang-parser = { path = "../parser", version = "0.1.0" }
 OriginalFilename = "sflyn.exe"
 LegalCopyright = "© Sflynlang contributors & Sfllang. MIT licensed."
 ProductNAme = "Sflynlang"
-FileDescription = "Multiparadigm and cross-platform programming language"
+FileDescription = "High-level programming language"

@@ -36,28 +36,6 @@ To check if the code works fine, we build tests of our code and to test them use
 
 Also, this command is used by the `Rust CI` workflow to check if the code to merge works.
 
-### Testing using Docker
-
-> NOTE: The release published on Docker is the beta version of this interpreter.
-
-1. Download [Docker](https://www.docker.com/).
-
-2. Run `docker run -ti jheysondev/sflyn:0.0.1 bash`.
-
-3. Go to `/home` (`cd home`).
-
-4. Create a new Sflynlang project: `sflyn init hello_world`.
-
-5. Go to `/home/hello_world` (`cd hello_world` from `/home`).
-
-6. Run the project:
-```bash
-$ sflyn start
-# Output: Hello world!
-```
-
-7. Congratulations! You've runned your first Sflynlang project on Docker.
-
 ## Social Networks
 - [Twitter](https://twitter.com/sflynlang)
 - [Facebook](https://facebook.com/sflynlang)
@@ -65,7 +43,7 @@ $ sflyn start
 ## Contributors
 - **Daniel Solarte** - Initial Work - [GitHub](https://github.com/danielsolartech)
 - **Maria Antonella** - Icon Design - [Instagram](https://instagram.com/elementaInsky)
-- **Jheyson Saavedra** - Docker and Add Command - [GitHub](https://github.com/JheysonDev)
+- **Jheyson Saavedra** - Docker - [GitHub](https://github.com/JheysonDev)
 
 You can also view the [contributors list](https://github.com/sflynlang/sflynlang-interpreter/contributors) here.
 

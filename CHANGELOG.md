@@ -1,5 +1,8 @@
 # Unreleased (0.1.0)
 
+## 17/11/2020
+- (CLI) Remove commands.
+
 ## 11/11/2020
 - (Examples) Add Label interface example.
 - (Parser) Add `interface` statement.
@@ -9,13 +12,11 @@
 - (Readme) Add guidelines to testing and compiling.
 
 ## 9/11/2020
-- Add Docker.
-- (CLI) Add `add` command.
+- Add Dockerfile.
 - (GitHub Actions) Add Rust CI.
 - Rename to `sflynlang`.
 
 ## 8/11/2020
-- (CLI) Add `-d`/`--debug` flag to `slang start` command.
 - (Compiler) Add `print` and `debug` built-ins functions.
 - Add compiler.
 - Add parser.
@@ -23,6 +24,5 @@
 
 ## 7/11/2020
 - Add `hello_world` and `fibonacci` examples.
-- Add `init` and `start` commands.
 - Add lexer test.
 - Add the lexer and tokens.
