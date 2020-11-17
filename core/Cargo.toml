@@ -2,10 +2,10 @@
 name = "sflyn"
 version = "0.1.0"
 edition = "2018"
-description = "High-level programming language"
+description = "High-Level programming language."
 authors = ["Sflynlang Contributors"]
 license = "MIT"
-repository = "https://github.com/sflynlang/sflynlang-compiler"
+repository = "https://github.com/sflynlang/sflynlang-interpreter"
 default-run = "sflyn"
 
 [[bin]]

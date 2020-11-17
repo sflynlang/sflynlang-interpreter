@@ -2,10 +2,10 @@
 name = "sflynlang-compiler"
 version = "0.1.0"
 edition = "2018"
-description = "Multiparadigm and cross-platform programming language"
+description = "High-Level programming language."
 authors = ["Sflynlang Contributors"]
 license = "MIT"
-repository = "https://github.com/sflynlang/sflynlang-compiler"
+repository = "https://github.com/sflynlang/sflynlang-interpreter"
 
 [lib]
 path = "lib.rs"
