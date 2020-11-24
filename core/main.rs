@@ -15,14 +15,19 @@ fn main() {
     let mut exit_code = 0;
 
     if let Some(run_file) = matches.value_of("FILE") {
-        let file_name = format!("{}/{}", utils::get_current_directory(), run_file);
+        let file_name =
+            format!("{}/{}", utils::get_current_directory(), run_file);
         let file_path = Path::new(&file_name);
 
-        if !file_path.exists() || !file_path.is_file() || !file_name.ends_with(".sf") {
+        if !file_path.exists()
+            || !file_path.is_file()
+            || !file_name.ends_with(".sf")
+        {
             println!("This path is not a Sflynlang file.");
             exit_code = 1;
         } else if let Ok(file_content) = fs::read_to_string(file_name) {
-            let file = sflynlang_parser::File::new(run_file.to_string(), file_content);
+            let file =
+                sflynlang_parser::File::new(run_file.to_string(), file_content);
 
             if let Some(statements) = sflynlang_parser::run(&file) {
                 exit_code = sflynlang_compiler::run(

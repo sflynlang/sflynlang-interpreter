@@ -36,6 +36,13 @@ impl DataTypes {
         }
     }
 
+    pub fn is_boolean(&self) -> bool {
+        match self {
+            Self::Boolean => true,
+            _ => false,
+        }
+    }
+
     pub fn get_function(&self) -> Option<(Vec<DataType>, Box<DataType>)> {
         match self {
             Self::Function(arguments, return_type) => {
@@ -56,6 +63,34 @@ impl DataTypes {
         match self {
             Self::Identifier(value) => Some(value.clone()),
             _ => None,
+        }
+    }
+
+    pub fn is_number(&self) -> bool {
+        match self {
+            Self::Number => true,
+            _ => false,
+        }
+    }
+
+    pub fn is_string(&self) -> bool {
+        match self {
+            Self::String => true,
+            _ => false,
+        }
+    }
+
+    pub fn is_unknown(&self) -> bool {
+        match self {
+            Self::Unknown => true,
+            _ => false,
+        }
+    }
+
+    pub fn is_void(&self) -> bool {
+        match self {
+            Self::Void => true,
+            _ => false,
         }
     }
 
@@ -89,5 +124,72 @@ impl DataTypes {
             Self::Unknown => String::from("unknown"),
             Self::Void => String::from("void"),
         }
+    }
+}
+
+impl PartialEq for DataTypes {
+    fn eq(&self, other: &Self) -> bool {
+        if let Some(self_type) = self.get_array() {
+            if let Some(other_type) = other.get_array() {
+                return self_type.node == other_type.node;
+            }
+        } else if let Some((self_arguments, self_return_type)) =
+            self.get_function()
+        {
+            if let Some((other_arguments, other_return_type)) =
+                other.get_function()
+            {
+                if self_arguments.len() == other_arguments.len() {
+                    let mut index: usize = 0;
+
+                    for arg in self_arguments.iter() {
+                        let other_arg: DataType =
+                            other_arguments[index].clone();
+
+                        if arg.node != other_arg.node {
+                            return false;
+                        }
+
+                        index += 1;
+                    }
+
+                    return self_return_type.node == other_return_type.node;
+                }
+            }
+        } else if let Some(self_data) = self.get_hashmap() {
+            if let Some(other_data) = other.get_hashmap() {
+                if self_data.len() == other_data.len() {
+                    for (key, value) in other_data.iter() {
+                        if other_data.contains_key(key) {
+                            let odata: &DataType = other_data.get(key).unwrap();
+
+                            if value.node == odata.node {
+                                continue;
+                            }
+                        }
+
+                        return false;
+                    }
+
+                    return true;
+                }
+            }
+        } else if let Some(self_identifier) = self.get_identifier() {
+            if let Some(other_identifier) = other.get_identifier() {
+                return self_identifier == other_identifier;
+            }
+        }
+
+        (self.is_boolean() && other.is_boolean())
+            || (self.is_number() && other.is_number())
+            || (self.is_string() && other.is_string())
+            || (self.is_unknown() && other.is_unknown())
+            || (self.is_void() && other.is_void())
+    }
+}
+
+impl PartialEq<DataType> for DataTypes {
+    fn eq(&self, other: &DataType) -> bool {
+        self == &other.node
     }
 }

@@ -1,5 +1,9 @@
 # Unreleased (0.1.0)
 
+## 24/11/2020
+- (Typechecker) Add `print` and `debug` built-ins functions.
+- Add typechecker.
+
 ## 17/11/2020
 - (CLI) Remove commands.
 
