@@ -4,6 +4,7 @@ pub use store::Store;
 
 use sflynlang_parser::{Error, File};
 
+#[derive(Clone, Debug)]
 pub struct Environment {
     debug_mode: bool,
     store: Store,
@@ -27,8 +28,12 @@ impl Environment {
         self.debug_mode = debug_mode;
     }
 
-    pub fn get_store(&self) -> Store {
-        self.store.clone()
+    pub fn get_store(&mut self) -> &mut Store {
+        &mut self.store
+    }
+
+    pub fn set_store(&mut self, store: &Store) {
+        self.store = store.clone();
     }
 
     pub fn get_errors(&self) -> Vec<Error> {

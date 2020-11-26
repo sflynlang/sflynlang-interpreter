@@ -19,10 +19,16 @@ pub fn run(statements: Vec<Statement>, debug_mode: bool, file: &File) -> i32 {
             typechecker::check_statement(statement, &mut environment)
         {
             environment.add_error(error);
-        } else if let Err(error) =
-            evaluator::evaluate_statement(statement, &mut environment)
-        {
-            environment.add_error(error);
+        }
+    }
+
+    if !environment.has_errors() {
+        for statement in statements.iter() {
+            if let Err(error) =
+                evaluator::evaluate_statement(statement, &mut environment)
+            {
+                environment.add_error(error);
+            }
         }
     }
 

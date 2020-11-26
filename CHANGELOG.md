@@ -1,5 +1,10 @@
 # Unreleased (0.1.0)
 
+## 26/11/2020
+- (STD) Add methods for numbers expressions.
+- (Typechecker/Compiler) Add function and return statements.
+- (Typechecker/Compiler) Add functions calls, arguments, if-else, infix, number and method expressions.
+
 ## 24/11/2020
 - (Typechecker) Add `print` and `debug` built-ins functions.
 - Add typechecker.

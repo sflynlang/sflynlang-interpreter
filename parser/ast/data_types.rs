@@ -23,6 +23,7 @@ pub enum DataTypes {
     HashMap(HashMap<String, Box<DataType>>),
     Identifier(String),
     Number,
+    Option(Box<DataType>),
     String,
     Unknown,
     Void,
@@ -73,6 +74,13 @@ impl DataTypes {
         }
     }
 
+    pub fn get_option(&self) -> Option<Box<DataType>> {
+        match self {
+            Self::Option(data_type) => Some(data_type.clone()),
+            _ => None,
+        }
+    }
+
     pub fn is_string(&self) -> bool {
         match self {
             Self::String => true,
@@ -120,6 +128,7 @@ impl DataTypes {
             ),
             Self::Identifier(value) => value.clone(),
             Self::Number => String::from("number"),
+            Self::Option(data_type) => format!("Option<{}>", data_type),
             Self::String => String::from("string"),
             Self::Unknown => String::from("unknown"),
             Self::Void => String::from("void"),
@@ -177,6 +186,10 @@ impl PartialEq for DataTypes {
         } else if let Some(self_identifier) = self.get_identifier() {
             if let Some(other_identifier) = other.get_identifier() {
                 return self_identifier == other_identifier;
+            }
+        } else if let Some(self_type) = self.get_option() {
+            if let Some(other_type) = other.get_option() {
+                return self_type.node == other_type.node;
             }
         }
 

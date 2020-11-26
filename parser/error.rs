@@ -168,6 +168,34 @@ impl Error {
         Self::new(position, ErrorType::Lexical(message.to_string()))
     }
 
+    /// Create a new name in use error.
+    ///
+    /// # Example
+    /// ```rust
+    /// use sflynlang_parser::{Error, File, Position};
+    ///
+    /// fn main() {
+    ///     let file = File::new(
+    ///         String::from("test.sf"),
+    ///         String::from("let name: string;\nlet name = 'Sflyn';"),
+    ///     );
+    ///
+    ///     let error_position = Position::new(23, 27, 2, 5);
+    ///     let last_position = Position::new(4, 8, 1, 5);
+    ///
+    ///     let error = Error::new_name_in_use(error_position, String::from("name"), last_position);
+    ///
+    ///     error.show(&file);
+    /// }
+    /// ```
+    pub fn new_name_in_use(
+        position: Position,
+        name: String,
+        last_position: Position,
+    ) -> Self {
+        Self::new(position, ErrorType::NameInUse(name, last_position))
+    }
+
     /// Create a new unknown identifier error.
     ///
     /// # Example
