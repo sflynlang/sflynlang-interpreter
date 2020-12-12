@@ -17,8 +17,9 @@ clap = "3.0.0-beta.2"
 semver = { version = "0.10", features = ["serde"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_yaml = "0.8"
-sflynlang-compiler = { path = "../compiler", version = "0.1.0" }
+sflynlang-interpreter = { path = "../interpreter", version = "0.1.0" }
 sflynlang-parser = { path = "../parser", version = "0.1.0" }
+git2 = "0.13"
 
 [package.metadata.winres]
 OriginalFilename = "sflyn.exe"

@@ -1,5 +1,5 @@
 [package]
-name = "sflynlang-compiler"
+name = "sflynlang-interpreter"
 version = "0.1.0"
 edition = "2018"
 description = "Multiparadigm and cross-platform programming language"

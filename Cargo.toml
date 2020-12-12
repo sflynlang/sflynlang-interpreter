@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "compiler",
+    "interpreter",
     "core",
     "parser",
 ]

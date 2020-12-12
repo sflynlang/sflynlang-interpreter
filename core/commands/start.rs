@@ -57,7 +57,7 @@ pub fn run(matches: &ArgMatches) -> i32 {
                             if let Some(statements) =
                                 sflynlang_parser::run(&file)
                             {
-                                sflynlang_compiler::run(
+                                sflynlang_interpreter::run(
                                     statements,
                                     matches.is_present("debug"),
                                     &file,
